@@ -21,7 +21,7 @@ app.get('/tests',async(req,res)=>{
     } catch(error){
         res.status(500).json({message:'Error fetching tests',error});
     }
-})
+});
 //Required to start
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

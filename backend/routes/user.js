@@ -76,3 +76,11 @@ router.post("/login",async(req,res)=>{
         res.status(500).json({message:'Login Failed'});
     }
 });
+
+//Logout Route
+router.post("/logout",(req,res)=>{
+    res.clearCookie('token');
+    res.json({message:'Logged out succesfully'});
+});
+
+module.exports=router;

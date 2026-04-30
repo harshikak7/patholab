@@ -8,7 +8,7 @@ const jwt=require('jsonwebtoken');
 //Signup Route
 router.post("/signup",async(req,res)=>{
     try{
-        const {name, email, phone, password, address, role} = req.body;
+        const {name, email, phone, password, address} = req.body;
 
         const existingUser=await User.findOne({email});
         
@@ -24,12 +24,12 @@ router.post("/signup",async(req,res)=>{
             phone,
             password:hashedPassword,
             address,
-            role
         });
 
         res.status(201).json({message:'Signup SUccesfull'});
 
     } catch(error){
+        console.log(error);
         res.status(500).json({
             message:'Signup failed'
         })

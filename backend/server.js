@@ -34,6 +34,17 @@ app.get('/tests',async(req,res)=>{
 const userRoutes=require('./routes/User');
 app.use('/users',userRoutes);
 
+const bookingRoutes=require('./routes/booking')
+app.use("/bookings",bookingRoutes);
+
+//Temp Protect route
+const verifyToken=require('./middleware/auth')
+
+app.get("/protected", verifyToken,(req,res)=>{
+    res.status(200).json({message:"Access Granted",user:req.user});
+})
+
+
 //Required to start
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

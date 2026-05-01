@@ -44,7 +44,6 @@ app.get("/protected", verifyToken,(req,res)=>{
     res.status(200).json({message:"Access Granted",user:req.user});
 })
 
-
 //Required to start
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

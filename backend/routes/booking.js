@@ -7,7 +7,7 @@ const Booking=require("../models/bookingModel")
 router.post("/",verifyToken,async(req,res)=>{
     try{
 
-        const {appointmentDate,slotTime}=req.body;
+        const {appointmentDate,timeSlot}=req.body;
         //Checking booking count
         const existingBookings=await Booking.countDocuments({ appointmentDate, timeSlot })
 

@@ -37,6 +37,9 @@ app.use('/users',userRoutes);
 const bookingRoutes=require('./routes/booking')
 app.use("/bookings",bookingRoutes);
 
+const reportRoutes=require('./routes/reports');
+app.use('/reports',reportRoutes);
+
 //Temp Protect route
 const verifyToken=require('./middleware/auth')
 

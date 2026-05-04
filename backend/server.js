@@ -30,8 +30,12 @@ app.get('/tests',async(req,res)=>{
     }
 });
 
+app.get("/",(req,res)=>{
+    res.send("Server is running")
+})
+
 //User routes
-const userRoutes=require('./routes/User');
+const userRoutes=require('./routes/user');
 app.use('/users',userRoutes);
 
 const bookingRoutes=require('./routes/booking')

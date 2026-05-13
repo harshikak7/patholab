@@ -1,11 +1,16 @@
 import React from 'react'
-import './index.css'
+import {BrowserRouter,Routes, Route} from "react-router-dom"
+import Login from './pages/Login'
+import Signup from './pages/Signup'
 
 const App = () => {
   return (
-    <div className='bg-indigo-200 h-screen text-5xl'>
-      HIIIII
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/login' element={<Login />}></Route>
+        <Route path='/signup' element={<Signup />}></Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
 

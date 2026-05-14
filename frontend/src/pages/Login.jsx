@@ -6,8 +6,8 @@ import {Lock, Mail} from 'lucide-react'
 
 const Login = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4 py-6 sm:p-8">
-      <div className='w-full max-w-md bg-gray-100 rounded-3xl shadow-md sm:p-8 '>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4 py-6 overflow-y-auto">
+      <div className='w-full max-w-2xl bg-white rounded-3xl shadow-md p-5 sm:p-6'>
         {/*Logo Section */}
         <div className='flex justify-center'>
           <img src={logo} alt='Patholab Logo' className='w-12 h-12 sm:w-18 sm:h-18 object-contain'></img>
@@ -20,34 +20,52 @@ const Login = () => {
         </div>
 
         {/* Tabs */}
-        <div className='grid grid-cols-2 border border-gray-400 rounded-xl overflow-hidden mb-2 text-sm sm:text-base m-3 sm:mx-0'>
-          <Link to={Signup} className='py-2 sm:py-3 text-center text-gray-600 hover:bg-gray-50 transition rounded-xl'>Sign up</Link>
-          <Link to={Login} className='py-2 sm:py-3  text-center font-semibold bg-white rounded-xl '>Log in</Link>
+        <div className='grid grid-cols-2 border border-gray-300 rounded-xl overflow-hidden mb-5 text-sm sm:text-base'>
+          <Link to='/signup' className='py-2.5 text-center text-gray-600 hover:bg-gray-50 transition'>Sign up</Link>
+          <Link to='/login' className='py-2.5 text-center font-semibold border-l border-gray-300 bg-white '>Log in</Link>
         </div>
 
         {/* Forms */}
         {/* Email */}
-        <form className='space-y-2 sm:space-y-2'>
-          <div className='px-4 sm:px-0'>
-          <label className='block mb-2 text-gray-600 font-medium'>Email</label>
-          <div className='relative'>
-            <Mail size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"/>
-            <input type='email' placeholder='Enter your email' className='w-full border border-gray-300 rounded-xl py-2 sm:py-3 pl-11 sm:pl-12  pr-12 outline-none focus:ring-2 focus:ring-blue-500'/>
+        <form  className='space-y-2 sm:space-y-2'>
+        <div>
+            <label className="block mb-2 text-gray-600 font-medium text-sm sm:text-base">
+              Email
+            </label>
+            <div className="relative">
+              <Mail
+                size={18}
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+              />
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="w-full border border-gray-300 rounded-xl py-2.5 pl-11 pr-4 text-sm sm:text-base outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
           </div>
-        </div>
 
         {/* Password */}
-        <div className='px-4 sm:px-0' >
-          <label className='block mb-2 mt-2 font-medium text-gray-600'>Password</label>
-          <div className='relative'>
-            <Lock size={20} className='absolute left-4 top-1/2 -translate-y-1/2 text-gray-400'/>
-            <input type="password" placeholder='Enter your password' className='w-full border border-gray-300 rounded-xl py-2 sm:py-3 pl-11 sm:pl-12 pr-12 outline-none focus:ring-2 focus:ring-blue-500'/>
+        <div>
+            <label className="block mb-2 text-gray-600 font-medium text-sm sm:text-base">
+              Password
+            </label>
+            <div className="relative">
+              <Lock
+                size={18}
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+              />
+              <input
+                type="password"
+                placeholder="Enter password"
+                className="w-full border border-gray-300 rounded-xl py-2.5 pl-11 pr-4 text-sm sm:text-base outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
           </div>
-        </div>
 
         {/* Forget */}
-        <div className='flex items-center justify-between mt-2 text-xxs px-4 sm:px-0'>
-          <label className='flex items-center gap-2 text-gray-600 leading-tight'><input size={60} type="checkbox" />Remember for 30 days</label>
+        <div className='flex items-center justify-between text-xs sm:text-sm px-4 sm:px-0'>
+          <label className='flex items-center gap-2 text-gray-600 '><input size={60} className="mt-1 w-4 h-4" type="checkbox" />Remember for 30 days</label>
           <button className='text-blue-600 font-medium hover:underline whitespace-nowrap leading-tight'>Forgot Password</button>
         </div>
 

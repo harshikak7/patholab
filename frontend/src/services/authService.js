@@ -8,3 +8,11 @@ const API=axios.create({
 export const signupUser=async(userData)=>{
     return API.post('/users/signup',userData)
 }
+
+export const loginUser=async(userData)=>{
+    return API.post('/users/login',userData)
+}
+
+export const checkAuth=async()=>{
+    return API.get('users/check-auth')
+}

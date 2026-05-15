@@ -4,6 +4,7 @@ const User=require('../models/userModel');
 
 const bcrypt=require('bcrypt');
 const jwt=require('jsonwebtoken');
+const verifyToken = require('../middleware/auth');
 
 //Signup Route
 router.post("/signup",async(req,res)=>{
@@ -86,5 +87,13 @@ router.post("/logout",(req,res)=>{
     res.clearCookie('token');
     res.json({message:'Logged out succesfully'});
 });
+
+//Check Auth Route
+router.get("/check-auth",verifyToken,async (req,res)=>{
+    res.status(200).json({
+        authenticated:true,
+        user:req.user
+    })
+})
 
 module.exports=router;

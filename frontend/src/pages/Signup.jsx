@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import {User, Mail, Phone, Lock, MapPin} from "lucide-react";
 import logo from "../assets/logo.svg";
 import { useState } from 'react';
-import { signupUser } from "../services/AuthService";
+import { signupUser } from "../services/authService";
 
 const Signup = () => {
   const [formData, setFormData] = useState({

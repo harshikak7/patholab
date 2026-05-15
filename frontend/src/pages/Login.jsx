@@ -1,11 +1,51 @@
-import React from 'react'
+import React, { useState } from 'react'
 import logo from '../assets/logo.svg'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Signup from './Signup';
-import {Lock, Mail} from 'lucide-react'
+import {Lock, Mail,Eye, EyeOff} from 'lucide-react'
+import { loginUser } from '../services/authService';
 
 const Login = () => {
+  const navigate=useNavigate()
+  const [showPassword, setShowPassword] = useState(false);
+  
+  const [formData, setFormData] = useState({
+    email:"",
+    password:"",
+  })
 
+  const handleChange=(e)=>{
+    setFormData({
+      ...formData,[e.target.name]:e.target.value
+    })
+  }
+
+  const handleSubmit=async(e)=>{
+    e.preventDefault()
+
+    if (!formData.email || !formData.password) {
+      alert("Please fill all fields");
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      alert("Please enter a valid email");
+      return;
+    }
+
+    try {
+      const response = await loginUser(formData);
+      alert(response.data.message);
+      console.log(response.data);
+      navigate('/dashboard')
+    } catch (error) {
+      alert(
+        error.response?.data?.message || "Login Failed"
+      );
+  }
+    
+  }
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4 py-6 overflow-y-auto">
       <div className='w-full max-w-2xl bg-white rounded-3xl shadow-md p-5 sm:p-6'>
@@ -28,7 +68,7 @@ const Login = () => {
 
         {/* Forms */}
         {/* Email */}
-        <form  className='space-y-2 sm:space-y-2'>
+        <form onSubmit={handleSubmit} className='space-y-2 sm:space-y-2'>
         <div>
             <label className="block mb-2 text-gray-600 font-medium text-sm sm:text-base">
               Email
@@ -39,7 +79,7 @@ const Login = () => {
                 className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
               />
               <input
-                type="email"
+                type="email" name='email' value={formData.email} onChange={handleChange}
                 placeholder="Enter your email"
                 className="w-full border border-gray-300 rounded-xl py-2.5 pl-11 pr-4 text-sm sm:text-base outline-none focus:ring-2 focus:ring-blue-500"
               />
@@ -52,15 +92,30 @@ const Login = () => {
               Password
             </label>
             <div className="relative">
+
+              <button
+  type="button"
+  onClick={() => setShowPassword(!showPassword)}
+  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"
+>
+
+  {
+    showPassword
+      ? <EyeOff size={20} />
+      : <Eye size={20} />
+  }
+
+</button>
               <Lock
                 size={18}
                 className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
               />
               <input
-                type="password"
+                type={showPassword ? "text" : "password"} name='password' value={formData.password} onChange={handleChange}
                 placeholder="Enter password"
                 className="w-full border border-gray-300 rounded-xl py-2.5 pl-11 pr-4 text-sm sm:text-base outline-none focus:ring-2 focus:ring-blue-500"
               />
+
             </div>
           </div>
 

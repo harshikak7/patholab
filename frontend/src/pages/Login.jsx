@@ -5,6 +5,7 @@ import Signup from './Signup';
 import {Lock, Mail} from 'lucide-react'
 
 const Login = () => {
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4 py-6 overflow-y-auto">
       <div className='w-full max-w-2xl bg-white rounded-3xl shadow-md p-5 sm:p-6'>

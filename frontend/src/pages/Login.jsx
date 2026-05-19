@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Signup from './Signup';
 import {Lock, Mail,Eye, EyeOff} from 'lucide-react'
 import { loginUser } from '../services/authService';
+import ForgotPassword from './ForgotPassword';
 
 const Login = () => {
   const navigate=useNavigate()
@@ -122,7 +123,7 @@ const Login = () => {
         {/* Forget */}
         <div className='flex items-center justify-between text-xs sm:text-sm px-4 sm:px-0'>
           <label className='flex items-center gap-2 text-gray-600 '><input size={60} className="mt-1 w-4 h-4" type="checkbox" />Remember for 30 days</label>
-          <button className='text-blue-600 font-medium hover:underline whitespace-nowrap leading-tight'>Forgot Password</button>
+          <button  className='text-blue-600 font-medium hover:underline whitespace-nowrap leading-tight'><Link to='/forgotPassword'>Forgot Password</Link></button>
         </div>
 
         {/* Login */}

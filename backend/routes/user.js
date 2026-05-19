@@ -1,10 +1,11 @@
 const express=require('express');
 const router=express.Router();
 const User=require('../models/userModel');
-
 const bcrypt=require('bcrypt');
 const jwt=require('jsonwebtoken');
 const verifyToken = require('../middleware/auth');
+const crypto=require('crypto')
+const transporter  = require('../config/mail');
 
 //Signup Route
 router.post("/signup",async(req,res)=>{
@@ -85,7 +86,7 @@ router.post("/login",async(req,res)=>{
 //Logout Route
 router.post("/logout",(req,res)=>{
     res.clearCookie('token');
-    res.json({message:'Logged out succesfully'});
+    res.status(200).json({message:'Logged out succesfully'});
 });
 
 //Check Auth Route
@@ -94,6 +95,33 @@ router.get("/check-auth",verifyToken,async (req,res)=>{
         authenticated:true,
         user:req.user
     })
+})
+
+//forgot password
+router.post('/forgot-Password',async(req,res)=>{
+    try{
+        const {email}=req.body
+        const user=await User.findOne({email})
+
+        if(!user){
+            return res.status(400).json({message:'User not found'})
+        }
+        const resetToken=crypto.randomBytes(32).toString('hex')
+
+        user.resetToken=resetToken
+        user.resetExpires=Date.now() + 3600000
+        await user.save()
+        const resetLink=`http://localhost:5173/reset-password/${resetToken}`;
+        await transporter.sendMail({
+            from:process.env.EMAIL_USER, to:email, subject:'Reset Password',html:`<h2>Reset Password</h2> <p>Click Below</p> <a href="${resetLink}">Reset Password</a>`
+        })
+        res.status(200).json({message:'Request email sent'})
+    }
+    catch(error){
+        console.log(error)
+        res.status(500).json({message:'Failed to send email'})
+    }
+
 })
 
 module.exports=router;

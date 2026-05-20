@@ -41,10 +41,10 @@ const ForgotPassword = () => {
         {/* Heading */}
         <div className="text-center mb-4">
           <h1 className="font-bold text-xl sm:text-3xl mb-2 text-gray-900">
-            Login to your account
+            Reset Your Password
           </h1>
           <p className="text-gray-600 text-xs sm:text-base ">
-            Welcome back! Please enter your details
+            Enter your email to receive a password reset link
           </p>
         </div>
 

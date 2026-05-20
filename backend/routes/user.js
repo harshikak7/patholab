@@ -151,4 +151,57 @@ router.post("/reset-password", async (req, res) => {
   }
 });
 
+//Google Login
+router.post("/google-login", async (req, res) => {
+  try {
+    const { name, email } = req.body;
+
+    let user = await User.findOne({
+      email,
+    });
+
+    if (!user) {
+      user = new User({
+        name,
+        email,
+        password: "GOOGLE",
+        phone:'0000000000',
+        address:'Google Login Address'
+      });
+      await user.save()
+    }
+
+    const token = jwt.sign(
+      {
+        id: user._id,
+      },
+
+      process.env.JWT_SECRET,
+
+      {
+        expiresIn: "7d",
+      },
+    );
+
+    res.cookie(
+      "token",
+
+      token,
+
+      {
+        httpOnly: true,
+      },
+    );
+
+    res.status(200).json({
+      message: "Login Success",
+    });
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({
+      message: "Failed",
+    });
+  }
+});
 module.exports = router;

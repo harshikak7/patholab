@@ -29,3 +29,7 @@ export const forgotPassword=async(email)=>{
 export const resetPassword=async(data)=>{
     return API.post('/users/reset-password',data)
 }
+
+export const googleLogin=async(data)=>{
+    return API.post('/users/google-login',data)
+}

@@ -5,10 +5,39 @@ import Signup from "./Signup";
 import { Lock, Mail, Eye, EyeOff } from "lucide-react";
 import { loginUser } from "../services/authService";
 import ForgotPassword from "./ForgotPassword";
+import { signInWithPopup } from "firebase/auth";
+import { auth, provider } from "../config/firebase";
+import { googleLogin } from "../services/authService";
 
 const Login = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+
+  const handleGoogleLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+
+      const user = result.user;
+
+      const response = await googleLogin({
+        name: user.displayName,
+
+        email: user.email,
+      });
+
+      alert(response.data.message);
+
+      navigate("/dashboard");
+    } catch (error) {
+      console.log(error);
+
+      console.log(error.response?.data);
+
+      alert(
+        error.response?.data?.message || error.message || "Google Login Failed",
+      );
+    }
+  };
 
   const [formData, setFormData] = useState({
     email: "",
@@ -165,6 +194,7 @@ const Login = () => {
           <div className="px-4 sm:px-0">
             <button
               type="button"
+              onClick={handleGoogleLogin}
               className="w-full rounded-xl border border-gray-300 mt-2 hover:bg-gray-200 transition flex items-center justify-center gap-3 py-3 sm:py-3 text-sm sm:text-base font-medium "
             >
               <img

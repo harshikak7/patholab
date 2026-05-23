@@ -25,7 +25,7 @@ const WhyPatholab = () => {
     },
   ];
   return (
-    <section className="bg-[#f7f7f7] py-20">
+    <section className="bg-[#f7f7f7] py-16">
       <div className="max-w-350 mx-auto px-6">
         <h2 className="text-center text-[35px] font-bold md:text-[42px]">
           Why PathoLab

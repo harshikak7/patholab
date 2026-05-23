@@ -51,14 +51,8 @@ const PackageCard = ({ item }) => {
       {/* Features */}
       <div className="mt-6 space-y-3">
         {item.features.map((feature) => (
-          <div
-            key={feature}
-            className="flex items-center gap-2 text-[#555]"
-          >
-            <Check
-              size={18}
-              className="text-[#17B978]"
-            />
+          <div key={feature} className="flex items-center gap-2 text-[#555]">
+            <Check size={18} className="text-[#17B978]" />
 
             <span>{feature}</span>
           </div>
@@ -67,7 +61,6 @@ const PackageCard = ({ item }) => {
 
       {/* Buttons */}
       <div className="flex gap-3 mt-8">
-
         <button
           className="
           flex-1
@@ -83,6 +76,7 @@ const PackageCard = ({ item }) => {
         </button>
 
         <button
+          onClick={() => navigate(`/package/${item.id}`)}
           className="
           flex-1
           bg-blue-600
@@ -94,7 +88,6 @@ const PackageCard = ({ item }) => {
         >
           Book Now
         </button>
-
       </div>
     </div>
   );

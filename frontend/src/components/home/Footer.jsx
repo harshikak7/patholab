@@ -5,15 +5,13 @@ import { Apple } from "lucide-react";
 const Footer = () => {
   return (
     <footer>
-
       <div className="bg-[#428DF5] text-white">
 
-        <div className="max-w-350 mx-auto px-6 py-20">
+        <div className="max-w-350 mx-auto px-6 py-10">
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
 
             {/* Logo */}
-
             <div>
 
               <img
@@ -30,7 +28,6 @@ const Footer = () => {
             </div>
 
             {/* Links */}
-
             <div>
 
               <h3 className="font-semibold mb-6">
@@ -50,7 +47,6 @@ const Footer = () => {
             </div>
 
             {/* Partner */}
-
             <div>
 
               <h3 className="font-semibold mb-6">
@@ -69,7 +65,6 @@ const Footer = () => {
             </div>
 
             {/* Contact */}
-
             <div>
 
               <h3 className="font-semibold mb-6">
@@ -92,7 +87,7 @@ const Footer = () => {
       </div>
 
       <div className="bg-[#242424] text-white py-6 text-center">
-        © 2025 PathoLab. All rights reserved
+        © 2026 PathoLab. All rights reserved
       </div>
 
     </footer>

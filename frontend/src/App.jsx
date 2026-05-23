@@ -7,6 +7,7 @@ import ProtectedRoute from './components/ProtectedRoute'
 import ForgotPassword from './pages/ForgotPassword'
 import ResetPassword from './pages/ResetPassword'
 import Home from './pages/Home'
+import Booking from './pages/Booking'
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
         <Route path='/signup' element={<Signup />}></Route>
         <Route path='/forgotPassword' element={<ForgotPassword/>}></Route>
         <Route path='/reset-Password/:token' element={<ResetPassword/>}></Route>
+        <Route path='/booking' element={<Booking/>}></Route>
         <Route path='dashboard' element={
           <ProtectedRoute>
             <Dashboard />

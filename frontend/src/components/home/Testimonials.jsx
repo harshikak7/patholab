@@ -29,7 +29,7 @@ const reviews = [
 
 const Testimonials = () => {
   return (
-    <section className="bg-[#F7F7F7] py-14">
+    <section className="bg-[#F7F7F7] py-6">
       <div className="max-w-350 mx-auto px-6">
 
         <h2 className="text-center text-[34px] md:text-[54px] font-bold ">
@@ -55,7 +55,7 @@ const Testimonials = () => {
                   {[...Array(5)].map((_, i) => (
                     <Star
                       key={i}
-                      size={18}
+                      size={16}
                       fill="#FF9D00"
                       className="text-[#FF9D00]"
                     />
@@ -63,11 +63,11 @@ const Testimonials = () => {
 
                 </div>
 
-                <p className="mt-8 text-[18px] text-[#333] leading-relaxed">
+                <p className="mt-8 text-[16px] text-[#333] leading-relaxed">
                   {item.review}
                 </p>
 
-                <button className="mt-5 text-[#00A67E]">
+                <button className="mt-5 text-sm text-[#00A67E]">
                   Read More
                 </button>
 

@@ -1,7 +1,9 @@
 import React from "react";
 import heroImg from "../../assets/hero-bg.png"; // add your hero image
+import {useNavigate} from "react-router-dom"
 
 const Hero = () => {
+  const navigate=useNavigate()
   return (
     <section
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
@@ -88,7 +90,7 @@ const Hero = () => {
             </div>
 
             {/* Button */}
-            <button
+            <button onClick={()=>navigate('/book-test')}
               className="
               bg-blue-600
               hover:bg-blue-700

@@ -76,7 +76,7 @@ const PackageCard = ({ item }) => {
         </button>
 
         <button
-          onClick={() => navigate(`/package/${item.id}`)}
+          onClick={() => navigate(`/booking/${item.id}`)}
           className="
           flex-1
           bg-blue-600

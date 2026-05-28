@@ -9,7 +9,7 @@ router.post("/",verifyToken,async(req,res)=>{
 
         const {appointmentDate,timeSlot}=req.body;
         //Checking booking count
-        const existingBookings=await Booking.countDocuments({ appointmentDate, timeSlot })
+        const existingBookings=await Booking.countDocuments({ appointmentDate: new Date(appointmentDate), timeSlot })
 
         if(existingBookings>=5){
             return res.status(400).json({message:"Selected time slot is full. Choose another time!"})
@@ -30,7 +30,13 @@ router.get("/my-bookings", verifyToken ,async(req,res)=>{
     try{
         const bookings=await Booking.find({
             userId:req.user.id
-        }).populate('tests');
+        }).populate('tests',
+             `  testName
+                price
+                category
+                reportTime
+                preparationRequired
+          `);
         res.json(bookings);
     }catch(error){
         console.log(error);

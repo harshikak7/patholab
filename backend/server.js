@@ -30,6 +30,18 @@ app.get('/tests',async(req,res)=>{
     }
 });
 
+app.get('/tests/:id',async(req,res)=>{
+    try{
+        const test=await Test.findById(req.params.id);
+        if(!test){
+            return res.status(404).json({message:'Test not found'});
+        }
+        res.json(test);
+    } catch(error){
+        res.status(500).json({message:'Test not found',error});
+    }
+});
+
 app.get("/",(req,res)=>{
     res.send("Server is running")
 })

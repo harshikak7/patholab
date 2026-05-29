@@ -1,5 +1,5 @@
-import React, { useState , useEffect} from "react";
-import { Check,  ChevronLeft, } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Check, ChevronLeft } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { createBooking } from "../services/bookingService";
 
@@ -12,7 +12,7 @@ const Booking = () => {
   const [step, setStep] = useState(1);
 
   const [loading, setLoading] = useState(false);
-  const [test,setTest]=useState(null)
+  const [test, setTest] = useState(null);
   const [form, setForm] = useState({
     name: booking.name || "",
     phone: booking.phone || "",
@@ -28,12 +28,8 @@ const Booking = () => {
   }, [id]);
 
   if (!test) {
-  return (
-    <div className="p-20">
-      Loading...
-    </div>
-  );
-}
+    return <div className="p-20">Loading...</div>;
+  }
   // if (!booking) {
   //   return <div className="p-20">No booking found</div>;
   // }
@@ -77,7 +73,7 @@ const Booking = () => {
   };
   return (
     <section className="min-h-screen bg-[#F7F7F7] py-16">
-      <div className="max-w-[1280px] mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-6">
         <div className="grid lg:grid-cols-[0.9fr_1.1fr] gap-8">
           {/* LEFT */}
 
@@ -116,7 +112,7 @@ const Booking = () => {
                 <h3 className="font-semibold">Important Note</h3>
 
                 <div className="mt-4 flex items-start gap-3 text-sm text-gray-600">
-                  <Check size={18} className="text-green-600 mt-[2px]" />
+                  <Check size={18} className="text-green-600 mt-0.5" />
 
                   <p>
                     Please ensure the patient is available during the selected
@@ -139,11 +135,11 @@ const Booking = () => {
                 completed={step > 1}
               />
 
-              <div className="flex-1 h-[1px] bg-gray-200 mx-4" />
+              <div className="flex-1 h-px bg-gray-200 mx-4" />
 
               <Step title="Payment" active={step === 2} completed={step > 2} />
 
-              <div className="flex-1 h-[1px] bg-gray-200 mx-4" />
+              <div className="flex-1 h-px bg-gray-200 mx-4" />
 
               <Step title="Confirmed" active={step === 3} completed={false} />
             </div>
@@ -154,7 +150,7 @@ const Booking = () => {
               <div>
                 <h2 className="text-2xl font-bold mt-10">Booking Details</h2>
 
-                <div className="mt-8 grid md:grid-cols-2 gap-5">
+                <div className="mt-8 grid md:grid-cols-2  gap-5">
                   <Input
                     label="Full Name"
                     value={form.name}
@@ -179,7 +175,7 @@ const Booking = () => {
 
                   <Input
                     type="date"
-                    label="Date"
+                    label="Date" 
                     value={form.date}
                     onChange={(e) =>
                       setForm({
@@ -189,16 +185,36 @@ const Booking = () => {
                     }
                   />
 
-                  <Input
-                    label="Time Slot"
-                    value={form.slot}
-                    onChange={(e) =>
-                      setForm({
-                        ...form,
-                        slot: e.target.value,
-                      })
-                    }
-                  />
+                  <div>
+                    <label className="block mb-2 text-sm">Time Slot</label>
+
+                    <select
+                      value={form.slot}
+                      onChange={(e) =>
+                        setForm({
+                          ...form,
+                          slot: e.target.value,
+                        })
+                      }
+                      className="w-full border border-gray-400 rounded-xl px-5 py-4"
+                    >
+                      <option value="">Select Slot</option>
+
+                      <option>09:00 AM</option>
+
+                      <option>10:00 AM</option>
+
+                      <option>11:00 AM</option>
+
+                      <option>12:00 PM</option>
+
+                      <option>02:00 PM</option>
+
+                      <option>03:00 PM</option>
+
+                      <option>04:00 PM</option>
+                    </select>
+                  </div>
                 </div>
 
                 <textarea
@@ -319,7 +335,7 @@ const Input = ({ label, value, onChange, type = "text" }) => {
         type={type}
         value={value}
         onChange={onChange}
-        className="w-full border rounded-xl px-5 py-4 outline-none focus:border-blue-500"
+        className="w-full border border-gray-400 rounded-xl px-5 py-4 outline-none focus:border-blue-500"
       />
     </div>
   );

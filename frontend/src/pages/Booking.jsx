@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Check, ChevronLeft } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { createBooking } from "../services/bookingService";
+import { createOrder } from "../services/paymentService";
 import {  CheckCircle2,  Calendar,  Clock3,  TestTube2,  IndianRupee,} from "lucide-react";
+
 const Booking = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -76,33 +78,86 @@ const Booking = () => {
     }
   };
 
-  const handlePayment = async () => {
+  const handlePayment =
+  async () => {
+
     try {
+
       setLoading(true);
 
-      const payload = {
-        tests: [id],
+      const order =
+        await createOrder(
+          test.price
+        );
 
-        appointmentDate: form.date,
+      const options = {
 
-        timeSlot: form.slot,
+        key:
+          import.meta.env
+            .VITE_RAZORPAY_KEY_ID,
 
-        address: form.address,
+        amount:
+          order.amount,
+
+        currency:
+          order.currency,
+
+        name:
+          "PathoLab",
+
+        description:
+          test.testName,
+
+        order_id:
+          order.id,
+
+        handler:
+          async function () {
+
+            const payload = {
+
+              tests: [id],
+
+              appointmentDate:
+                form.date,
+
+              timeSlot:
+                form.slot,
+
+              address:
+                form.address,
+            };
+
+            await createBooking(
+              payload
+            );
+
+            setStep(3);
+          },
       };
 
-      await createBooking(payload);
+      const razorpay =
+        new window.Razorpay(
+          options
+        );
 
-      sessionStorage.removeItem("bookingDraft");
+      razorpay.open();
 
-      setStep(3);
     } catch (error) {
-      alert(error?.response?.data?.message || "Booking Failed");
 
       console.log(error);
+
+      alert(
+        "Payment Failed"
+      );
+
     } finally {
+
       setLoading(false);
+
     }
   };
+  
   return (
     
     <section className="min-h-screen bg-[#F7F7F7] py-16">

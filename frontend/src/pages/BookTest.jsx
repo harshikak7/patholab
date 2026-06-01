@@ -7,7 +7,6 @@ import Footer from "../components/home/Footer";
 import TestCard from "../components/tests/TestCard";
 
 import { Search } from "lucide-react";
-
 import { getTests } from "../services/testService";
 
 const BookTest = () => {

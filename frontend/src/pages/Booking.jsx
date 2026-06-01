@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Check, ChevronLeft } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { createBooking } from "../services/bookingService";
-
+import {  CheckCircle2,  Calendar,  Clock3,  TestTube2,  IndianRupee,} from "lucide-react";
 const Booking = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -20,6 +20,8 @@ const Booking = () => {
     slot: booking.slot || "",
     address: booking.address || "",
   });
+
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     fetch(`http://localhost:5000/tests/${id}`)
@@ -43,6 +45,36 @@ const Booking = () => {
   //   reports: "24 Hours",
   //   includes: ["CBC", "Liver Function", "Lipid Profile", "Thyroid"],
   // };
+
+  const validateForm = () => {
+    let newErrors = {};
+
+    if (!form.name.trim()) {
+      newErrors.name = "Name is required";
+    }
+
+    if (!/^[0-9]{10}$/.test(form.phone)) {
+      newErrors.phone = "Enter valid phone number";
+    }
+
+    if (!form.date) {
+      newErrors.date = "Select a date";
+    }
+
+    if (!form.slot) {
+      newErrors.slot = "Select a slot";
+    }
+
+    if (form.address.trim().length < 5) {
+      newErrors.address = "Enter valid address";
+    }
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      setStep(2);
+    }
+  };
 
   const handlePayment = async () => {
     try {
@@ -72,6 +104,7 @@ const Booking = () => {
     }
   };
   return (
+    
     <section className="min-h-screen bg-[#F7F7F7] py-16">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid lg:grid-cols-[0.9fr_1.1fr] gap-8">
@@ -105,7 +138,7 @@ const Booking = () => {
                   value={test.preparationRequired ? "Yes" : "No"}
                 />
 
-                <InfoRow title="Reports" value={`${test.reportTime} Hours`} />
+                <InfoRow title="Reports" value={test.reportTime} />
               </div>
 
               <div className="mt-10 bg-blue-50 rounded-2xl p-5">
@@ -150,40 +183,69 @@ const Booking = () => {
               <div>
                 <h2 className="text-2xl font-bold mt-10">Booking Details</h2>
 
-                <div className="mt-8 grid md:grid-cols-2  gap-5">
-                  <Input
-                    label="Full Name"
-                    value={form.name}
-                    onChange={(e) =>
-                      setForm({
-                        ...form,
-                        name: e.target.value,
-                      })
-                    }
-                  />
+                <div className="mt-8 grid md:grid-cols-2 gap-5">
+                  {/* NAME */}
 
-                  <Input
-                    label="Phone"
-                    value={form.phone}
-                    onChange={(e) =>
-                      setForm({
-                        ...form,
-                        phone: e.target.value,
-                      })
-                    }
-                  />
+                  <div>
+                    <Input
+                      label="Full Name"
+                      value={form.name}
+                      onChange={(e) =>
+                        setForm({
+                          ...form,
+                          name: e.target.value,
+                        })
+                      }
+                    />
 
-                  <Input
-                    type="date"
-                    label="Date" 
-                    value={form.date}
-                    onChange={(e) =>
-                      setForm({
-                        ...form,
-                        date: e.target.value,
-                      })
-                    }
-                  />
+                    {errors.name && (
+                      <p className="text-red-500 text-sm mt-1">{errors.name}</p>
+                    )}
+                  </div>
+
+                  {/* PHONE */}
+
+                  <div>
+                    <Input
+                      label="Phone"
+                      value={form.phone}
+                      onChange={(e) =>
+                        setForm({
+                          ...form,
+                          phone: e.target.value,
+                        })
+                      }
+                    />
+
+                    {errors.phone && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.phone}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* DATE */}
+
+                  <div>
+                    <Input
+                      type="date"
+                      label="Date"
+                      min={new Date().toISOString().split("T")[0]}
+                      value={form.date}
+                      onChange={(e) =>
+                        setForm({
+                          ...form,
+                          date: e.target.value,
+                        })
+                      }
+                    />
+
+                    {errors.date && (
+                      <p className="text-red-500 text-sm mt-1">{errors.date}</p>
+                    )}
+                  </div>
+
+                  {/* SLOT */}
 
                   <div>
                     <label className="block mb-2 text-sm">Time Slot</label>
@@ -200,23 +262,26 @@ const Booking = () => {
                     >
                       <option value="">Select Slot</option>
 
-                      <option>09:00 AM</option>
+                      <option value="09:00 AM">09:00 AM</option>
 
-                      <option>10:00 AM</option>
+                      <option value="10:00 AM">10:00 AM</option>
 
-                      <option>11:00 AM</option>
+                      <option value="11:00 AM">11:00 AM</option>
 
-                      <option>12:00 PM</option>
+                      <option value="12:00 PM">12:00 PM</option>
 
-                      <option>02:00 PM</option>
+                      <option value="02:00 PM">02:00 PM</option>
 
-                      <option>03:00 PM</option>
+                      <option value="03:00 PM">03:00 PM</option>
 
-                      <option>04:00 PM</option>
+                      <option value="04:00 PM">04:00 PM</option>
                     </select>
+
+                    {errors.slot && (
+                      <p className="text-red-500 text-sm mt-1">{errors.slot}</p>
+                    )}
                   </div>
                 </div>
-
                 <textarea
                   rows="4"
                   value={form.address}
@@ -229,9 +294,12 @@ const Booking = () => {
                   placeholder="Enter Address"
                   className="mt-5 w-full border rounded-xl p-4 outline-none focus:border-blue-500"
                 />
+                {errors.address && (
+                  <p className="text-red-500 text-sm mt-1">{errors.address}</p>
+                )}
 
                 <button
-                  onClick={() => setStep(2)}
+                  onClick={validateForm}
                   className="mt-8 w-full bg-blue-500 hover:bg-blue-600 text-white py-4 rounded-full transition"
                 >
                   Continue Payment
@@ -245,20 +313,36 @@ const Booking = () => {
               <div>
                 <button
                   onClick={() => setStep(1)}
-                  className="text-sm text-gray-500 hover:text-black transition mt-8"
+                  className="text-gray-500 hover:text-blue-500 transition mt-4"
                 >
                   ← Back to Information
                 </button>
 
-                <h2 className="text-2xl font-bold mt-6">Payment</h2>
+                <div className="mt-8 border rounded-[28px] p-6">
+                  <h3 className="text-xl font-semibold mb-6">
+                    Booking Summary
+                  </h3>
 
-                <div className="mt-8 border border-gray-200 rounded-3xl p-6">
-                  <div className="flex justify-between items-center border-b pb-5">
-                    <span>Total Amount</span>
+                  <div className="space-y-2">
+                    <SummaryRow label="Test Name" value={test.testName} />
 
-                    <span className="text-2xl font-semibold">
-                      ₹{test.price}
-                    </span>
+                    <SummaryRow label="Category" value={test.category} />
+
+                    <SummaryRow label="Patient Name" value={form.name} />
+
+                    <SummaryRow label="Phone" value={form.phone} />
+
+                    <SummaryRow label="Appointment Date" value={form.date} />
+
+                    <SummaryRow label="Time Slot" value={form.slot} />
+
+                    <SummaryRow label="Address" value={form.address} />
+                  </div>
+
+                  <div className="border-t mt-8 pt-4 flex justify-between items-center">
+                    <span className="text-lg font-medium">Total Amount</span>
+
+                    <span className="text-2xl font-bold">₹{test.price}</span>
                   </div>
 
                   <button
@@ -266,7 +350,7 @@ const Booking = () => {
                     disabled={loading}
                     className="mt-8 w-full bg-blue-500 hover:bg-blue-600 text-white py-4 rounded-full transition"
                   >
-                    {loading ? "Processing..." : "Fake Pay"}
+                    {loading ? "Processing..." : "Proceed to Payment"}
                   </button>
                 </div>
               </div>
@@ -274,24 +358,115 @@ const Booking = () => {
 
             {/* STEP 3 */}
 
-            {step === 3 && (
-              <div className="text-center py-20">
-                <div className="text-6xl">✅</div>
+           {step === 3 && (
+  <div className="mt-16 flex flex-col items-center">
 
-                <h2 className="text-4xl font-bold mt-6">Booking Confirmed</h2>
+    <div className="w-24 h-24 rounded-full bg-green-100 flex items-center justify-center">
+      <CheckCircle2
+        size={54}
+        className="text-green-600"
+      />
+    </div>
 
-                <p className="mt-4 text-gray-500">
-                  Technician details will appear once assigned.
-                </p>
+    <h2 className="text-3xl font-bold mt-8">
+      Booking Confirmed
+    </h2>
 
-                <button
-                  onClick={() => navigate("/dashboard")}
-                  className="mt-10 bg-blue-500 hover:bg-blue-600 text-white px-10 py-4 rounded-full transition"
-                >
-                  Go Dashboard
-                </button>
-              </div>
-            )}
+    <p className="text-gray-500 mt-4 text-base">
+      Your booking has been successfully placed.
+    </p>
+
+    <p className="text-gray-500">
+      Technician details will appear once assigned.
+    </p>
+
+    {/* <div className="w-full max-w-2xl mt-10 border rounded-3xl p-8">
+
+      <div className="grid md:grid-cols-2 gap-8">
+
+        <div className="flex items-start gap-3">
+          <Calendar
+            size={22}
+            className="text-blue-500 mt-1"
+          />
+
+          <div>
+            <p className="text-gray-500 text-sm">
+              Appointment Date
+            </p>
+
+            <p className="font-semibold">
+              {form.date}
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-start gap-3">
+          <TestTube2
+            size={22}
+            className="text-blue-500 mt-1"
+          />
+
+          <div>
+            <p className="text-gray-500 text-sm">
+              Test Name
+            </p>
+
+            <p className="font-semibold">
+              {test.testName}
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-start gap-3">
+          <Clock3
+            size={22}
+            className="text-blue-500 mt-1"
+          />
+
+          <div>
+            <p className="text-gray-500 text-sm">
+              Time Slot
+            </p>
+
+            <p className="font-semibold">
+              {form.slot}
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-start gap-3">
+          <IndianRupee
+            size={22}
+            className="text-blue-500 mt-1"
+          />
+
+          <div>
+            <p className="text-gray-500 text-sm">
+              Amount Paid
+            </p>
+
+            <p className="font-semibold">
+              ₹{test.price}
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+    </div> */}
+
+    <button
+      onClick={() =>
+        navigate("/dashboard")
+      }
+      className="mt-8 bg-blue-500 hover:bg-blue-600 text-white px-12 py-4 rounded-full transition"
+    >
+      Go to Dashboard
+    </button>
+
+  </div>
+)}
           </div>
         </div>
       </div>
@@ -326,13 +501,14 @@ const Step = ({ title, active, completed }) => {
   );
 };
 
-const Input = ({ label, value, onChange, type = "text" }) => {
+const Input = ({ label, value, onChange, type = "text", min }) => {
   return (
     <div>
       <label className="block mb-2 text-sm">{label}</label>
 
       <input
         type={type}
+        min={min}
         value={value}
         onChange={onChange}
         className="w-full border border-gray-400 rounded-xl px-5 py-4 outline-none focus:border-blue-500"
@@ -351,4 +527,11 @@ const InfoRow = ({ title, value }) => {
   );
 };
 
+const SummaryRow = ({ label, value }) => (
+  <div className="flex justify-between gap-6">
+    <span className="text-gray-500">{label}</span>
+
+    <span className="font-medium text-right">{value}</span>
+  </div>
+);
 export default Booking;

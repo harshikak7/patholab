@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { createBooking } from "../services/bookingService";
 import { createOrder } from "../services/paymentService";
 import {  CheckCircle2,  Calendar,  Clock3,  TestTube2,  IndianRupee,} from "lucide-react";
+import Navbar from "../components/home/Navbar";
 
 const Booking = () => {
   const navigate = useNavigate();
@@ -159,8 +160,10 @@ const Booking = () => {
   };
   
   return (
+    <>
+      <Navbar/>
+    <section className="min-h-screen bg-[#F7F7F7] py-8">
     
-    <section className="min-h-screen bg-[#F7F7F7] py-16">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid lg:grid-cols-[0.9fr_1.1fr] gap-8">
           {/* LEFT */}
@@ -337,8 +340,8 @@ const Booking = () => {
                     )}
                   </div>
                 </div>
-                <textarea
-                  rows="4"
+                <textarea 
+                  rows="2"
                   value={form.address}
                   onChange={(e) =>
                     setForm({
@@ -525,7 +528,7 @@ const Booking = () => {
           </div>
         </div>
       </div>
-    </section>
+    </section></>
   );
 };
 

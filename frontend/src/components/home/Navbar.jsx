@@ -44,7 +44,7 @@ const Navbar = () => {
     navigate("/");
   };
   return (
-    <header className="absolute top-0 left-0 w-full z-50  ">
+    <header className="sticky top-0 left-0 w-full z-50 bg-white shadow-sm">
       <div className="max-w-8xl mx-auto px-6 lg:px-10">
         <nav className=" h-20 flex items-center justify-between">
           <Link to="/">

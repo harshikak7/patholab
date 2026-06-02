@@ -3,6 +3,7 @@ import { Check, ChevronLeft } from "lucide-react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { createBooking } from "../services/bookingService";
 import { createOrder } from "../services/paymentService";
+import {useCart} from "../context/CartContext";
 import {
   CheckCircle2,
   Calendar,
@@ -16,6 +17,8 @@ const Booking = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const location = useLocation();
+  const {clearCart} = useCart();
+
   const cartTests = JSON.parse(sessionStorage.getItem("cartBooking")) || [];
   console.log(cartTests);
   const isCartBooking = location.pathname === "/booking/cart";
@@ -131,7 +134,11 @@ const Booking = () => {
           };
 
           await createBooking(payload);
+          clearCart();
 
+sessionStorage.removeItem(
+  "cartBooking"
+);
           setStep(3);
         },
       };

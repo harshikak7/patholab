@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import logo from "../../assets/logo.svg";
-
 import { Link, useLocation, useNavigate } from "react-router-dom";
-
-import { Menu, X, User, ChevronDown, LogOut } from "lucide-react";
-
+import { Menu, X, User, ChevronDown, LogOut, ShoppingCart } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
-
 import { logoutUser } from "../../services/authService";
+import { useCart } from "../../context/CartContext";
+import CartDrawer from "../cart/CartDrawer";
+
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const location = useLocation();
+  const { cartItems } = useCart();
+  const [cartOpen, setCartOpen] = useState(false);
   const navLinks = [
     {
       title: "Home",
@@ -63,45 +64,74 @@ const Navbar = () => {
               </Link>
             ))}
           </div>
+
+          {/* Cart ig */}
+          {/* <div className="flex items-center gap-6">
+            <button className="relative">
+              <ShoppingCart size={22} />
+
+              {cartItems.length > 0 && (
+                <span className="absolute -top-2 -right-2 bg-blue-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {cartItems.length}
+                </span>
+              )}
+            </button>
+          </div> */}
+
           {/* Button Login */}
           {!loading &&
             (user ? (
-              <div className="relative hidden lg:block">
+              <div className="flex items-center gap-6">
                 <button
-                  onClick={() => setProfileOpen(!profileOpen)}
-                  className="flex items-center gap-2"
-                >
-                  <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-                    <User size={18} />
-                  </div>
+  onClick={() => setCartOpen(true)}
+  className="relative"
+>
+  <ShoppingCart size={22} />
 
-                  <ChevronDown size={18} />
-                </button>
+  {cartItems.length > 0 && (
+    <span className="absolute -top-2 -right-2 bg-blue-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+      {cartItems.length}
+    </span>
+  )}
+</button>
 
-                {profileOpen && (
-                  <div className="absolute right-0 mt-3 bg-white rounded-2xl shadow-xl w-52 overflow-hidden">
-                    <button
-                      onClick={() => navigate("/dashboard")}
-                      className="w-full text-left px-4 py-3 hover:bg-gray-50"
-                    >
-                      Dashboard
-                    </button>
+                <div className="relative">
+                  <button
+                    onClick={() => setProfileOpen(!profileOpen)}
+                    className="flex items-center gap-2"
+                  >
+                    <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                      <User size={18} />
+                    </div>
 
-                    <button
-                      onClick={() => navigate("/my-bookings")}
-                      className="w-full text-left px-4 py-3 hover:bg-gray-50"
-                    >
-                      My Bookings
-                    </button>
+                    <ChevronDown size={18} />
+                  </button>
 
-                    <button
-                      onClick={handleLogout}
-                      className="w-full text-left px-4 py-3 hover:bg-red-50 text-red-500"
-                    >
-                      Logout
-                    </button>
-                  </div>
-                )}
+                  {profileOpen && (
+                    <div className="absolute right-0 top-full mt-3 bg-white rounded-2xl shadow-xl w-52 overflow-hidden">
+                      <button
+                        onClick={() => navigate("/dashboard")}
+                        className="w-full text-left px-4 py-3 hover:bg-gray-50"
+                      >
+                        Dashboard
+                      </button>
+
+                      <button
+                        onClick={() => navigate("/my-bookings")}
+                        className="w-full text-left px-4 py-3 hover:bg-gray-50"
+                      >
+                        My Bookings
+                      </button>
+
+                      <button
+                        onClick={handleLogout}
+                        className="w-full text-left px-4 py-3 hover:bg-red-50 text-red-500"
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             ) : (
               <Link
@@ -186,6 +216,7 @@ const Navbar = () => {
           </div>
         </div>
       )}
+      <CartDrawer open={cartOpen} setOpen={setCartOpen} />
     </header>
   );
 };

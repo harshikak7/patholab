@@ -51,7 +51,7 @@ const BookTest = () => {
 
       {/* HERO */}
 
-      <div className="max-w-350 mx-auto px-6 pt-32">
+      <div className="max-w-350 mx-auto px-6 pt-10">
         <div className="relative rounded-[36px] overflow-hidden h-85">
           <img
             src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=1600&auto=format&fit=crop"
@@ -76,7 +76,7 @@ const BookTest = () => {
 
       {/* SEARCH */}
 
-      <div className="max-w-350 mx-auto px-6 mt-14">
+      <div className="max-w-350 mx-auto px-6 mt-8">
         <div className="bg-white rounded-2xl px-6 py-5 flex items-center gap-4 border border-gray-100">
           <Search size={20} className="text-gray-400" />
 
@@ -92,7 +92,7 @@ const BookTest = () => {
 
       {/* TITLE */}
 
-      <div className="max-w-350 mx-auto px-6 mt-14">
+      <div className="max-w-350 mx-auto px-6 mt-8">
         <h2 className="text-5xl font-bold">All Tests</h2>
 
         <p className="text-gray-500 mt-3">
@@ -102,7 +102,7 @@ const BookTest = () => {
 
       {/* GRID */}
 
-      <div className="max-w-350 mx-auto px-6 py-14 grid sm:grid-cols-2 xl:grid-cols-3 gap-8">
+      <div className="max-w-350 mx-auto px-6 py-8 grid sm:grid-cols-2 xl:grid-cols-3 gap-8">
         {filteredTests.map((item) => (
           <TestCard key={item._id} item={item} />
         ))}

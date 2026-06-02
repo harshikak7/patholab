@@ -1,7 +1,8 @@
 import { X, Trash2 } from "lucide-react";
 import { useCart } from "../../context/CartContext";
-
+import { useNavigate } from "react-router-dom";
 const CartDrawer = ({ open, setOpen }) => {
+
   const {
     cartItems,
     removeFromCart,
@@ -14,12 +15,13 @@ const CartDrawer = ({ open, setOpen }) => {
       0
     );
 
+    const navigate=useNavigate()
   return (
     <>
       {open && (
-        <div className="fixed inset-0 bg-black/40 z-[99]">
+        <div className="fixed inset-0 bg-black/40 z-99">
 
-          <div className="absolute right-0 top-0 h-full w-[420px] bg-white shadow-2xl p-6 overflow-y-auto">
+          <div className="absolute right-0 top-0 h-full w-105 bg-white shadow-2xl p-6 overflow-y-auto">
 
             {/* HEADER */}
 
@@ -94,7 +96,17 @@ const CartDrawer = ({ open, setOpen }) => {
 
               </div>
 
-              <button
+              <button onClick={()=>{
+                sessionStorage.setItem(
+      "cartBooking",
+      JSON.stringify(cartItems)
+    );
+
+    setOpen(false);
+
+    navigate("/booking/cart");
+
+                }}
                 className="mt-4 w-full bg-blue-500 text-white py-4 rounded-full"
               >
                 Proceed

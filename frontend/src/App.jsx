@@ -22,14 +22,11 @@ const App = () => {
             <Route path="/login" element={<Login />}></Route>
             <Route path="/signup" element={<Signup />}></Route>
             <Route path="/forgotPassword" element={<ForgotPassword />}></Route>
-            <Route
-              path="/reset-Password/:token"
-              element={<ResetPassword />}
-            ></Route>
+            <Route path="/reset-Password/:token" element={<ResetPassword />}></Route>
             <Route path="/booking/:id" element={<Booking />}></Route>
+            <Route path="/booking/cart" element={<Booking/>}></Route>
             <Route path="/book-test" element={<BookTest />}></Route>
-            <Route
-              path="dashboard"
+            <Route path="dashboard"
               element={
                 <ProtectedRoute>
                   <Dashboard />

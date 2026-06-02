@@ -56,6 +56,10 @@ app.use("/bookings",bookingRoutes);
 const reportRoutes=require('./routes/reports');
 app.use('/reports',reportRoutes);
 
+//payment route
+const paymentRoutes=require('./routes/payment')
+app.use('/payment',paymentRoutes)
+
 //Temp Protect route
 const verifyToken=require('./middleware/auth')
 

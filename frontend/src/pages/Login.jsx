@@ -8,8 +8,11 @@ import ForgotPassword from "./ForgotPassword";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../config/firebase";
 import { googleLogin } from "../services/authService";
+import { checkAuth } from "../services/authService";
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
+  const { setUser } = useAuth();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -25,9 +28,13 @@ const Login = () => {
         email: user.email,
       });
 
-      alert(response.data.message);
+      const authData = await checkAuth();
 
-      navigate("/dashboard");
+setUser(authData.data.user);
+
+alert(response.data.message);
+
+navigate("/dashboard");
     } catch (error) {
       console.log(error);
 
@@ -67,8 +74,13 @@ const Login = () => {
 
     try {
       const response = await loginUser(formData);
+
+      const authData = await checkAuth();
+
+      setUser(authData.data.user);
+
       alert(response.data.message);
-      console.log(response.data);
+
       navigate("/dashboard");
     } catch (error) {
       alert(error.response?.data?.message || "Login Failed");

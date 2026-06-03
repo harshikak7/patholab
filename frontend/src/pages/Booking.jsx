@@ -181,32 +181,30 @@ const Booking = () => {
 
                     <div className="mt-6 space-y-4">
                       {cartTests.map((item) => (
-  <details
-    key={item._id}
-    className="border border-gray-300 rounded-2xl p-4"
-  >
-    <summary className="cursor-pointer font-semibold">
-      {item.testName}
-    </summary>
+                        <details
+                          key={item._id}
+                          className="border border-gray-300 rounded-2xl p-4"
+                        >
+                          <summary className="cursor-pointer font-semibold">
+                            {item.testName}
+                          </summary>
 
-    <div className="mt-3 space-y-2 text-sm text-gray-600">
-      <p>
-        Reports: {item.reportTime}
-      </p>
+                          <div className="mt-3 space-y-2 text-sm text-gray-600">
+                            <p>Reports: {item.reportTime}</p>
 
-      <p>
-        Preparation:
-        {item.preparationRequired
-          ? " Required"
-          : " Not Required"}
-      </p>
+                            <p>
+                              Preparation:
+                              {item.preparationRequired
+                                ? " Required"
+                                : " Not Required"}
+                            </p>
 
-      <p className="font-semibold text-black">
-        ₹{item.price}
-      </p>
-    </div>
-  </details>
-))}
+                            <p className="font-semibold text-black">
+                              ₹{item.price}
+                            </p>
+                          </div>
+                        </details>
+                      ))}
                     </div>
 
                     <div className="mt-6 flex justify-between text-xl font-bold">

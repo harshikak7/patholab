@@ -58,7 +58,7 @@ const Form = () => {
   };
 
   return (
-    <section className="bg-[#F7F7F7] py-10">
+    <section className="bg-white py-10">
       <div className="max-w-350 mx-auto px-6">
         {/* Heading */}
         <h2 className=" text-center text-[32px] md:text-[44px] font-bold mb-14">

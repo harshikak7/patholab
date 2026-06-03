@@ -3,7 +3,7 @@ import { Check, ChevronLeft } from "lucide-react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { createBooking } from "../services/bookingService";
 import { createOrder } from "../services/paymentService";
-import {useCart} from "../context/CartContext";
+import { useCart } from "../context/CartContext";
 import {
   CheckCircle2,
   Calendar,
@@ -17,7 +17,7 @@ const Booking = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const location = useLocation();
-  const {clearCart} = useCart();
+  const { clearCart } = useCart();
 
   const cartTests = JSON.parse(sessionStorage.getItem("cartBooking")) || [];
   console.log(cartTests);
@@ -136,9 +136,7 @@ const Booking = () => {
           await createBooking(payload);
           clearCart();
 
-sessionStorage.removeItem(
-  "cartBooking"
-);
+          sessionStorage.removeItem("cartBooking");
           setStep(3);
         },
       };
@@ -183,15 +181,32 @@ sessionStorage.removeItem(
 
                     <div className="mt-6 space-y-4">
                       {cartTests.map((item) => (
-                        <div
-                          key={item._id}
-                          className="flex justify-between border-b pb-3"
-                        >
-                          <span>{item.testName}</span>
+  <details
+    key={item._id}
+    className="border border-gray-300 rounded-2xl p-4"
+  >
+    <summary className="cursor-pointer font-semibold">
+      {item.testName}
+    </summary>
 
-                          <span className="font-medium">₹{item.price}</span>
-                        </div>
-                      ))}
+    <div className="mt-3 space-y-2 text-sm text-gray-600">
+      <p>
+        Reports: {item.reportTime}
+      </p>
+
+      <p>
+        Preparation:
+        {item.preparationRequired
+          ? " Required"
+          : " Not Required"}
+      </p>
+
+      <p className="font-semibold text-black">
+        ₹{item.price}
+      </p>
+    </div>
+  </details>
+))}
                     </div>
 
                     <div className="mt-6 flex justify-between text-xl font-bold">
@@ -225,7 +240,7 @@ sessionStorage.removeItem(
                   </>
                 )}
 
-                <div className="mt-10 bg-blue-50 rounded-2xl p-5">
+                <div className="mt-6 bg-blue-50 rounded-2xl p-5">
                   <h3 className="font-semibold">Important Note</h3>
 
                   <div className="mt-4 flex items-start gap-3 text-sm text-gray-600">

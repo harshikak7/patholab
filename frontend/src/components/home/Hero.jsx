@@ -8,16 +8,16 @@ const Hero = () => {
     <section
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
-      {/* Background */}
+      {/* Background
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{
           backgroundImage: `url(${heroImg})`,
         }}
-      />
+      /> */}
 
       {/* Content */}
-      <div className="relative z-10 w-full px-6">
+      <div className="relative z-12 w-full h-90 px-6">
         <div className="max-w-4xl mx-auto text-center">
           
           {/* Heading */}

@@ -21,3 +21,18 @@ export const getMyBookings = async () => {
 
   return response.data;
 };
+
+export const getBookingById =
+  async (id) => {
+
+    const response =
+      await axios.get(
+        `http://localhost:5000/bookings/${id}`,
+        {
+          withCredentials:
+            true,
+        }
+      );
+
+    return response.data;
+  };

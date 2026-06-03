@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../components/home/Navbar";
 import { Calendar, Clock3 } from "lucide-react";
 import { getMyBookings } from "../services/bookingService";
+import { useNavigate } from "react-router-dom";
 
 const MyBookings = () => {
+    const navigate = useNavigate();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -111,9 +113,16 @@ const MyBookings = () => {
                     {booking.tests?.length > 1 ? "s" : ""}
                   </span>
 
-                  <button className="text-blue-600 font-medium hover:text-blue-700">
-                    View Details
-                  </button>
+                  <button
+  onClick={() =>
+    navigate(
+      `/booking-details/${booking._id}`
+    )
+  }
+  className="text-blue-600 font-medium hover:text-blue-700"
+>
+  View Details
+</button>
                 </div>
               </div>
             ))}

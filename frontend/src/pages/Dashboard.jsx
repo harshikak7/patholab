@@ -76,67 +76,62 @@ const Dashboard = () => {
             <h2 className="text-xl font-semibold">Upcoming Appointment</h2>
 
             <div className="mt-6">
+              {upcomingBooking ? (
+                <>
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <h3 className="text-2xl font-bold">
+                        {upcomingBooking.tests
+                          ?.map((test) => test.testName)
+                          .join(", ")}
+                      </h3>
 
-  {upcomingBooking ? (
-    <>
+                      <p className="text-gray-500 mt-2">
+                        Home Sample Collection
+                      </p>
+                    </div>
 
-      <h3 className="text-xl font-semibold">
-        {upcomingBooking.tests
-          ?.map(
-            (test) =>
-              test.testName
-          )
-          .join(", ")}
-      </h3>
+                    <span className="px-4 py-2 rounded-full bg-yellow-100 text-yellow-700 text-sm font-medium">
+                      {upcomingBooking.status}
+                    </span>
+                  </div>
 
-      <div className="grid grid-cols-2 gap-4 mt-5">
+                  <div className="flex flex-col gap-3 mt-6">
+                    <div className="flex items-center gap-3">
+                      <Calendar size={18} className="text-blue-600" />
 
-        <div className="bg-gray-50 rounded-xl p-3">
+                      <span>
+                        {new Date(
+                          upcomingBooking.appointmentDate,
+                        ).toLocaleDateString()}
+                      </span>
+                    </div>
 
-          <p className="text-xs text-gray-400">
-            Date
-          </p>
+                    <div className="flex items-center gap-3">
+                      <Activity size={18} className="text-blue-600" />
 
-          <p className="font-medium">
-            {new Date(
-              upcomingBooking.appointmentDate
-            ).toLocaleDateString()}
-          </p>
+                      <span>{upcomingBooking.timeSlot}</span>
+                    </div>
+                  </div>
 
-        </div>
+                  <Link
+                    to={`/booking-details/${upcomingBooking._id}`}
+                    className="inline-flex items-center gap-2 mt-6 bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl transition"
+                  >
+                    View Booking
+                    <ChevronRight size={18} />
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <h3 className="font-semibold text-lg">No Upcoming Booking</h3>
 
-        <div className="bg-gray-50 rounded-xl p-3">
-
-          <p className="text-xs text-gray-400">
-            Time
-          </p>
-
-          <p className="font-medium">
-            {upcomingBooking.timeSlot}
-          </p>
-
-        </div>
-
-      </div>
-
-      <span className="inline-block mt-5 px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 text-sm">
-        {upcomingBooking.status}
-      </span>
-
-    </>
-  ) : (
-    <>
-      <h3 className="font-semibold text-lg">
-        No Upcoming Booking
-      </h3>
-
-      <p className="text-gray-500 mt-2">
-        Book a test to see your appointment details here.
-      </p>
-    </>
-  )}
-
-</div>
+                  <p className="text-gray-500 mt-2">
+                    Book a test to see your appointment details here.
+                  </p>
+                </>
+              )}
+            </div>
           </div>
 
           {/* RECENT BOOKINGS */}
@@ -164,10 +159,15 @@ const Dashboard = () => {
                     <p className="font-medium">
                       {booking.tests?.map((test) => test.testName).join(", ")}
                     </p>
+                    <div className="flex justify-between items-center mt-2">
+                      <p className="text-sm text-gray-500">
+                        {new Date(booking.appointmentDate).toLocaleDateString()}
+                      </p>
 
-                    <p className="text-sm text-gray-500 mt-1">
-                      {booking.status}
-                    </p>
+                      <span className="px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 text-xs">
+                        {booking.status}
+                      </span>
+                    </div>
                   </div>
                 ))
               ) : (
@@ -187,7 +187,11 @@ const Dashboard = () => {
               to="/book-test"
               className="bg-blue-50 hover:bg-blue-100 rounded-2xl p-5 transition"
             >
-              <h3 className="font-semibold">Book Test</h3>
+              <div className="flex justify-between items-center">
+                <h3 className="font-semibold">Book Test</h3>
+
+                <ChevronRight size={18} className="text-blue-600" />
+              </div>
 
               <p className="text-sm text-gray-500 mt-1">
                 Schedule a new lab test
@@ -198,7 +202,11 @@ const Dashboard = () => {
               to="/my-bookings"
               className="bg-blue-50 hover:bg-blue-100 rounded-2xl p-5 transition"
             >
-              <h3 className="font-semibold">My Appointments</h3>
+              <div className="flex justify-between items-center">
+                <h3 className="font-semibold">My Appointments</h3>
+
+                <ChevronRight size={18} className="text-blue-600" />
+              </div>
 
               <p className="text-sm text-gray-500 mt-1">View all bookings</p>
             </Link>
@@ -207,7 +215,11 @@ const Dashboard = () => {
               to="/reports"
               className="bg-blue-50 hover:bg-blue-100 rounded-2xl p-5 transition"
             >
-              <h3 className="font-semibold">Reports</h3>
+              <div className="flex justify-between items-center">
+                <h3 className="font-semibold">Reports</h3>
+
+                <ChevronRight size={18} className="text-blue-600" />
+              </div>
 
               <p className="text-sm text-gray-500 mt-1">Access test reports</p>
             </Link>
@@ -218,32 +230,20 @@ const Dashboard = () => {
   );
 };
 
-const StatCard = ({
-  icon,
-  title,
-  value,
-}) => {
+const StatCard = ({ icon, title, value }) => {
   return (
     <div className="bg-white rounded-[24px] p-5 shadow-sm">
-
       <div className="flex items-center gap-3">
-
         <div className="w-11 h-11 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600">
           {icon}
         </div>
 
         <div>
-          <p className="text-gray-500 text-sm">
-            {title}
-          </p>
+          <p className="text-gray-500 text-sm">{title}</p>
 
-          <p className="text-2xl font-bold">
-            {value}
-          </p>
+          <p className="text-2xl font-bold">{value}</p>
         </div>
-
       </div>
-
     </div>
   );
 };

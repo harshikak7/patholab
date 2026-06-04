@@ -2,8 +2,33 @@ import React from "react";
 import Navbar from "../components/home/Navbar";
 import { Calendar, FileText, Activity, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { getMyBookings } from "../services/bookingService";
+import { useEffect, useState } from "react";
 
 const Dashboard = () => {
+  const [bookings, setBookings] = useState([]);
+  useEffect(() => {
+    const fetchBookings = async () => {
+      try {
+        const data = await getMyBookings();
+        setBookings(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchBookings();
+  }, []);
+
+  const totalBookings = bookings.length;
+  const completedTests = bookings.filter(
+    (booking) => booking.status === "completed",
+  ).length;
+  const reportsReady = completedTests; // Assuming each completed test has a report ready
+
+  const upcomingBooking = bookings.find(
+    (booking) => booking.status !== "Completed",
+  );
   return (
     <div className="min-h-screen bg-[#F7F8FC]">
       <Navbar />
@@ -23,11 +48,23 @@ const Dashboard = () => {
         {/* STATS */}
 
         <div className="grid md:grid-cols-3  gap-6 mt-6">
-          <StatCard icon={<Calendar />} title="Bookings" value="0" />
+          <StatCard
+            icon={<Calendar />}
+            title="Bookings"
+            value={totalBookings}
+          />
 
-          <StatCard icon={<FileText />} title="Reports Ready" value="0" />
+          <StatCard
+            icon={<FileText />}
+            title="Reports Ready"
+            value={reportsReady}
+          />
 
-          <StatCard icon={<Activity />} title="Completed Tests" value="0" />
+          <StatCard
+            icon={<Activity />}
+            title="Completed Tests"
+            value={completedTests}
+          />
         </div>
 
         {/* TWO COLUMN */}
@@ -39,12 +76,67 @@ const Dashboard = () => {
             <h2 className="text-xl font-semibold">Upcoming Appointment</h2>
 
             <div className="mt-6">
-              <h3 className="font-semibold text-lg">No Upcoming Booking</h3>
 
-              <p className="text-gray-500 mt-2">
-                Book a test to see your appointment details here.
-              </p>
-            </div>
+  {upcomingBooking ? (
+    <>
+
+      <h3 className="text-xl font-semibold">
+        {upcomingBooking.tests
+          ?.map(
+            (test) =>
+              test.testName
+          )
+          .join(", ")}
+      </h3>
+
+      <div className="grid grid-cols-2 gap-4 mt-5">
+
+        <div className="bg-gray-50 rounded-xl p-3">
+
+          <p className="text-xs text-gray-400">
+            Date
+          </p>
+
+          <p className="font-medium">
+            {new Date(
+              upcomingBooking.appointmentDate
+            ).toLocaleDateString()}
+          </p>
+
+        </div>
+
+        <div className="bg-gray-50 rounded-xl p-3">
+
+          <p className="text-xs text-gray-400">
+            Time
+          </p>
+
+          <p className="font-medium">
+            {upcomingBooking.timeSlot}
+          </p>
+
+        </div>
+
+      </div>
+
+      <span className="inline-block mt-5 px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 text-sm">
+        {upcomingBooking.status}
+      </span>
+
+    </>
+  ) : (
+    <>
+      <h3 className="font-semibold text-lg">
+        No Upcoming Booking
+      </h3>
+
+      <p className="text-gray-500 mt-2">
+        Book a test to see your appointment details here.
+      </p>
+    </>
+  )}
+
+</div>
           </div>
 
           {/* RECENT BOOKINGS */}
@@ -62,7 +154,26 @@ const Dashboard = () => {
               </Link>
             </div>
 
-            <p className="mt-6 text-gray-500">No bookings yet.</p>
+            <div className="space-y-4 mt-6">
+              {bookings.length > 0 ? (
+                bookings.slice(0, 3).map((booking) => (
+                  <div
+                    key={booking._id}
+                    className="border-b border-gray-100 pb-4"
+                  >
+                    <p className="font-medium">
+                      {booking.tests?.map((test) => test.testName).join(", ")}
+                    </p>
+
+                    <p className="text-sm text-gray-500 mt-1">
+                      {booking.status}
+                    </p>
+                  </div>
+                ))
+              ) : (
+                <p className="text-gray-500">No bookings yet.</p>
+              )}
+            </div>
           </div>
         </div>
 
@@ -107,16 +218,33 @@ const Dashboard = () => {
   );
 };
 
-const StatCard = ({ icon, title, value }) => {
+const StatCard = ({
+  icon,
+  title,
+  value,
+}) => {
   return (
-    <div className="bg-white rounded-2xl p-6 shadow-sm">
-      <div className="text-blue-600">{icon}</div>
+    <div className="bg-white rounded-[24px] p-5 shadow-sm">
 
-      <h3 className="mt-4 text-gray-500">{title}</h3>
+      <div className="flex items-center gap-3">
 
-      <p className="text-3xl font-bold mt-2">{value}</p>
+        <div className="w-11 h-11 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600">
+          {icon}
+        </div>
+
+        <div>
+          <p className="text-gray-500 text-sm">
+            {title}
+          </p>
+
+          <p className="text-2xl font-bold">
+            {value}
+          </p>
+        </div>
+
+      </div>
+
     </div>
   );
 };
-
 export default Dashboard;

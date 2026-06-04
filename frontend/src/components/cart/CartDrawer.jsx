@@ -48,40 +48,48 @@ const CartDrawer = ({ open, setOpen }) => {
               {cartItems.map(
                 (item) => (
                   <div
-                    key={item._id}
-                    className="border rounded-2xl p-4 flex justify-between items-center"
-                  >
+  key={item._id}
+  className="bg-gray-50 rounded-3xl p-5 flex justify-between items-start"
+>
+  <div>
+    <h3 className="font-semibold text-lg">
+      {item.testName}
+    </h3>
 
-                    <div>
+    {/* <p className="text-sm text-gray-500 mt-1">
+      Reports in {item.reportTime}
+    </p> */}
 
-                      <h3 className="font-semibold">
-                        {item.testName}
-                      </h3>
+    <p className="text-blue-600 font-semibold mt-3">
+      ₹{item.price}
+    </p>
+  </div>
 
-                      <p className="text-blue-600 font-medium">
-                        ₹{item.price}
-                      </p>
-
-                    </div>
-
-                    <button
-                      onClick={() =>
-                        removeFromCart(
-                          item._id
-                        )
-                      }
-                    >
-                      <Trash2
-                        size={18}
-                      />
-                    </button>
-
-                  </div>
+  <button
+    onClick={() =>
+      removeFromCart(item._id)
+    }
+    className="text-gray-400 hover:text-red-500 transition"
+  >
+    <Trash2 size={20} />
+  </button>
+</div>
                 )
               )}
 
             </div>
-
+              
+              <div className="mt-6">
+  <button
+    onClick={() => {
+      setOpen(false);
+      navigate("/book-test");
+    }}
+    className="w-full border-2 border-dashed border-blue-200 rounded-2xl py-4 text-blue-600 font-medium hover:bg-blue-50 transition"
+  >
+    + Add More Tests
+  </button>
+</div>
             {/* FOOTER */}
 
             <div className="absolute bottom-0 left-0 w-full border-t bg-white p-6">

@@ -10,3 +10,29 @@ export const createBooking=async(bookingDate)=>{
     })
     return response.data
 }
+
+export const getMyBookings = async () => {
+  const response = await axios.get(
+    "http://localhost:5000/bookings/my-bookings",
+    {
+      withCredentials: true,
+    }
+  );
+
+  return response.data;
+};
+
+export const getBookingById =
+  async (id) => {
+
+    const response =
+      await axios.get(
+        `http://localhost:5000/bookings/${id}`,
+        {
+          withCredentials:
+            true,
+        }
+      );
+
+    return response.data;
+  };

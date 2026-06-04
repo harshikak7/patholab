@@ -11,7 +11,8 @@ import Booking from "./pages/Booking";
 import BookTest from "./pages/BookTest";
 import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
-
+import MyBookings from "./pages/MyBookings";
+import BookingDetails from "./pages/BookingDetails";
 const App = () => {
   return (
     <BrowserRouter>
@@ -23,9 +24,14 @@ const App = () => {
             <Route path="/signup" element={<Signup />}></Route>
             <Route path="/forgotPassword" element={<ForgotPassword />}></Route>
             <Route path="/reset-Password/:token" element={<ResetPassword />}></Route>
-            <Route path="/booking/:id" element={<Booking />}></Route>
-            <Route path="/booking/cart" element={<Booking/>}></Route>
+            
+            <Route path="/booking/:id" element={<ProtectedRoute><Booking /></ProtectedRoute>}></Route>
+            <Route path="/booking/cart" element={<ProtectedRoute><Booking /></ProtectedRoute>}></Route>
+            
             <Route path="/book-test" element={<BookTest />}></Route>
+            <Route path="/my-bookings" element={<ProtectedRoute><MyBookings /></ProtectedRoute>}></Route>
+
+            <Route  path="/booking-details/:id"  element={<ProtectedRoute><BookingDetails /></ProtectedRoute>}/>
             <Route path="dashboard"
               element={
                 <ProtectedRoute>

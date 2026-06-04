@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import logo from "../assets/logo.svg";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate ,useLocation} from "react-router-dom";
 import Signup from "./Signup";
 import { Lock, Mail, Eye, EyeOff } from "lucide-react";
 import { loginUser } from "../services/authService";
@@ -14,6 +14,7 @@ import { useAuth } from "../context/AuthContext";
 const Login = () => {
   const { setUser } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [showPassword, setShowPassword] = useState(false);
 
   const handleGoogleLogin = async () => {
@@ -34,7 +35,10 @@ setUser(authData.data.user);
 
 alert(response.data.message);
 
-navigate("/dashboard");
+navigate(
+  location.state?.redirectTo ||
+  "/dashboard"
+);
     } catch (error) {
       console.log(error);
 
@@ -81,11 +85,15 @@ navigate("/dashboard");
 
       alert(response.data.message);
 
-      navigate("/dashboard");
+      navigate(
+  location.state?.redirectTo ||
+  "/dashboard"
+);
     } catch (error) {
       alert(error.response?.data?.message || "Login Failed");
     }
   };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4 py-6 overflow-y-auto">
       <div className="w-full max-w-2xl bg-white rounded-3xl shadow-md p-5 sm:p-6">

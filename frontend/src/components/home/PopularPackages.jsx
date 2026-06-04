@@ -48,7 +48,7 @@ const packages = [
 
 const PopularPackages = () => {
   return (
-    <section className="bg-[#F7F7F7] py-24">
+    <section className="bg-white py-2">
 
       <div className="max-w-350 mx-auto px-6">
 

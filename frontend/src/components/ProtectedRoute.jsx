@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate,useLocation } from "react-router-dom";
 import { checkAuth } from "../services/authService";
 
 const ProtectedRoute = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-
+  const location = useLocation();
   useEffect(() => {
     const verifyUser = async () => {
       try {
@@ -24,10 +24,17 @@ const ProtectedRoute = ({ children }) => {
     return <div>Loading...</div>;
   }
 
-  return isAuthenticated
-    ? children
-    : <Navigate to="/login" />;
-
+ return isAuthenticated ? (
+  children
+) : (
+  <Navigate
+    to="/login"
+    state={{
+      redirectTo: location.pathname,
+    }}
+    replace
+  />
+);
 };
 
 export default ProtectedRoute;

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import logo from "../assets/logo.svg";
-import { Link, useNavigate ,useLocation} from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import Signup from "./Signup";
 import { Lock, Mail, Eye, EyeOff } from "lucide-react";
 import { loginUser } from "../services/authService";
@@ -31,14 +31,15 @@ const Login = () => {
 
       const authData = await checkAuth();
 
-setUser(authData.data.user);
+      setUser(authData.data.user);
 
-alert(response.data.message);
+      alert(response.data.message);
 
-navigate(
-  location.state?.redirectTo ||
-  "/dashboard"
-);
+      if (authData.data.user.role === "admin") {
+  navigate("/admin/dashboard");
+} else {
+  navigate("/dashboard");
+}
     } catch (error) {
       console.log(error);
 
@@ -85,10 +86,11 @@ navigate(
 
       alert(response.data.message);
 
-      navigate(
-  location.state?.redirectTo ||
-  "/dashboard"
-);
+      if (authData.data.user.role === "admin") {
+  navigate("/admin/dashboard");
+} else {
+  navigate("/dashboard");
+}
     } catch (error) {
       alert(error.response?.data?.message || "Login Failed");
     }

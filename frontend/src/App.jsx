@@ -13,6 +13,10 @@ import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
 import MyBookings from "./pages/MyBookings";
 import BookingDetails from "./pages/BookingDetails";
+import MyReports from "./pages/MyReports";
+import AdminDashboard from "./pages/AdminDashboard";
+import AdminBookings from "./pages/AdminBookings";
+
 const App = () => {
   return (
     <BrowserRouter>
@@ -39,6 +43,9 @@ const App = () => {
                 </ProtectedRoute>
               }
             ></Route>
+            <Route path="/reports" element={<ProtectedRoute><MyReports /></ProtectedRoute>}></Route>
+            <Route path="/admin/dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>}></Route>
+            <Route path="/admin/bookings" element={<ProtectedRoute><AdminBookings/></ProtectedRoute>}></Route>
           </Routes>
         </CartProvider>
       </AuthProvider>

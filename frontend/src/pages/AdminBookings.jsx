@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-
 import { getAllBookings } from "../services/adminService";
+import AdminLayout from "../components/admin/AdminLayout";
 
 const AdminBookings = () => {
   const [bookings, setBookings] = useState([]);
@@ -20,7 +20,7 @@ const AdminBookings = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#F7F8FC] p-10">
+    <AdminLayout>
       <h1 className="text-4xl font-bold">Manage Bookings</h1>
 
       <p className="text-gray-500 mt-2">View and manage all appointments.</p>
@@ -70,7 +70,7 @@ const AdminBookings = () => {
           </div>
         ))}
       </div>
-    </div>
+    </AdminLayout>
   );
 };
 

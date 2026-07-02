@@ -82,18 +82,15 @@ const Navbar = () => {
           {!loading &&
             (user ? (
               <div className="flex items-center gap-6">
-                <button
-  onClick={() => setCartOpen(true)}
-  className="relative"
->
-  <ShoppingCart size={22} />
+                <button onClick={() => setCartOpen(true)} className="relative">
+                  <ShoppingCart size={22} />
 
-  {cartItems.length > 0 && (
-    <span className="absolute -top-2 -right-2 bg-blue-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-      {cartItems.length}
-    </span>
-  )}
-</button>
+                  {cartItems.length > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-blue-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                      {cartItems.length}
+                    </span>
+                  )}
+                </button>
 
                 <div className="relative">
                   <button

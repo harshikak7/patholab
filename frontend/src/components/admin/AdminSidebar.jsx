@@ -9,100 +9,104 @@ import {
   Headphones,
 } from "lucide-react";
 
-import logo from "../../assets/logo.svg";
-
 import { Link, useLocation } from "react-router-dom";
 
 const AdminSidebar = () => {
   const location = useLocation();
 
-  const links = [
+  const menuItems = [
     {
       title: "Dashboard",
       path: "/admin/dashboard",
-      icon: <LayoutDashboard size={20} />, // Replace with Dashboard Icon
+      icon: <LayoutDashboard size={20} strokeWidth={2} />,
     },
     {
       title: "Bookings",
       path: "/admin/bookings",
-      icon: <CalendarDays size={20} />, // Replace
+      icon: <CalendarDays size={20} strokeWidth={2} />,
     },
     {
       title: "Reports",
       path: "/admin/reports",
-      icon: <FileText size={20} />, // Replace
+      icon: <FileText size={20} strokeWidth={2} />,
     },
     {
       title: "Technicians",
       path: "/admin/technicians",
-      icon: <Stethoscope size={20} />, // Replace
+      icon: <Stethoscope size={20} strokeWidth={2} />,
     },
     {
       title: "Tests",
       path: "/admin/tests",
-      icon: <FlaskConical size={20} />, // Replace
+      icon: <FlaskConical size={20} strokeWidth={2} />,
     },
     {
       title: "Users",
       path: "/admin/users",
-      icon: <Users size={20} />, // Replace
+      icon: <Users size={20} strokeWidth={2} />,
     },
   ];
 
   return (
-    <aside className="w-[280px] min-h-screen bg-white border-r border-gray-200 flex flex-col px-5 py-7">
-      {/* Logo */}
+    <aside className="w-[260px] h-[calc(100vh-80px)] bg-white border-r border-gray-100 flex flex-col px-4 py-6 sticky top-20">
 
-      <div>
-        {/* Replace with Logo Image */}
+      <nav className="flex flex-col gap-1">
 
-        <img src={logo} alt="PathoLab" className="w-36" />
-      </div>
+        {menuItems.map((item) => {
 
-      {/* Navigation */}
+          const active = location.pathname === item.path;
 
-      <nav className="mt-10 space-y-2">
-        {links.map((link) => (
-          <Link
-            key={link.path}
-            to={link.path}
-            className={`flex items-center gap-4 px-5 py-2 rounded-xl transition-all duration-200
+          return (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={`flex items-center gap-4 h-14 px-5 rounded-xl transition-all duration-200
+              ${
+                active
+                  ? "bg-blue-100 text-blue-600 font-medium"
+                  : "text-gray-600 hover:bg-gray-50"
+              }`}
+            >
+              {item.icon}
 
-            ${
-              location.pathname === link.path
-                ? "bg-gray-100 text-black font-semibold"
-                : "text-gray-600 hover:bg-gray-50"
-            }
-          `}
-          >
-            {link.icon}
-
-            <span className="text-lg">{link.title}</span>
-          </Link>
-        ))}
+              <span className="text-[17px]">{item.title}</span>
+            </Link>
+          );
+        })}
       </nav>
 
-      {/* Bottom */}
+      <div className="mt-auto border-t border-gray-100 pt-6 flex flex-col gap-2">
 
-      <div className="mt-auto space-y-0">
         <Link
           to="/admin/settings"
-          className="flex items-center gap-4 px-5 py-4 rounded-xl hover:bg-gray-50 text-gray-600"
+          className={`flex items-center gap-4 h-14 px-5 rounded-xl transition-all
+          ${
+            location.pathname === "/admin/settings"
+              ? "bg-blue-100 text-blue-600 font-medium"
+              : "text-gray-600 hover:bg-gray-50"
+          }`}
         >
           <Settings size={20} />
 
-          <span className="text-lg">Settings</span>
+          <span className="text-[17px]">Settings</span>
         </Link>
 
         <Link
           to="/admin/help"
-          className="flex items-center gap-4 px-5 py-2 rounded-xl hover:bg-gray-50 text-gray-600"
+          className={`flex items-center gap-4 h-14 px-5 rounded-xl transition-all
+          ${
+            location.pathname === "/admin/help"
+              ? "bg-blue-100 text-blue-600 font-medium"
+              : "text-gray-600 hover:bg-gray-50"
+          }`}
         >
           <Headphones size={20} />
 
-          <span className="text-lg">Help Centre</span>
+          <span className="text-[17px]">Help Centre</span>
         </Link>
+
       </div>
+
     </aside>
   );
 };

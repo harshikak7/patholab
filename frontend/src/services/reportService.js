@@ -10,3 +10,14 @@ export const getMyReports = async () => {
 
   return response.data;
 };
+
+export const getReportByBooking = async (bookingId) => {
+  const response = await axios.get(
+    `http://localhost:5000/reports/${bookingId}`,
+    {
+      withCredentials: true,
+    }
+  );
+
+  return response.data;
+};

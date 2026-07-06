@@ -16,6 +16,7 @@ import BookingDetails from "./pages/BookingDetails";
 import MyReports from "./pages/MyReports";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminBookings from "./pages/AdminBookings";
+import AdminReport from "./pages/AdminReport";
 
 const App = () => {
   return (
@@ -46,6 +47,7 @@ const App = () => {
             <Route path="/reports" element={<ProtectedRoute><MyReports /></ProtectedRoute>}></Route>
             <Route path="/admin/dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>}></Route>
             <Route path="/admin/bookings" element={<ProtectedRoute><AdminBookings/></ProtectedRoute>}></Route>
+            <Route path="/admin/reports" element={<ProtectedRoute><AdminReport /></ProtectedRoute>}></Route>
           </Routes>
         </CartProvider>
       </AuthProvider>

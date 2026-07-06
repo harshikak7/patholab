@@ -42,7 +42,14 @@ router.get("/my-bookings", verifyToken, async (req, res) => {
                 reportTime
                 preparationRequired
           `,
-    );
+    ).populate(
+  "technicianId",
+  `
+    name
+    phone
+    email
+  `,
+);
     res.json(bookings);
   } catch (error) {
     console.log(error);
@@ -62,7 +69,14 @@ router.get("/:id", verifyToken, async (req, res) => {
           reportTime
           preparationRequired
           `,
-    );
+    ).populate(
+  "technicianId",
+  `
+    name
+    phone
+    email
+  `,
+);;
 
     if (!booking) {
       return res.status(404).json({

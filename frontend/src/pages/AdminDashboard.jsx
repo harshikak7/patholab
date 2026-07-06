@@ -1,198 +1,321 @@
-import { Link } from "react-router-dom";
-import { Bell, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
+import { CalendarDays, ClipboardCheck, Users, FileText } from "lucide-react";
+import { Link } from "react-router-dom";
 
+import {
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  XAxis,
+  Tooltip,
+  PieChart,
+  Pie,
+  Cell,
+} from "recharts";
+
+import StatusBadge from "../components/admin/StatusBadge";
 import AdminLayout from "../components/admin/AdminLayout";
-import { getAllBookings } from "../services/adminService";
+import StatCard from "../components/admin/StatCard";
+import { getDashboard } from "../services/adminService";
 
 const AdminDashboard = () => {
-  const [bookings, setBookings] = useState([]);
+  const [dashboard, setDashboard] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchBookings = async () => {
-      try {
-        const data = await getAllBookings();
-        setBookings(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchBookings();
+    fetchDashboard();
   }, []);
+
+  const fetchDashboard = async () => {
+    try {
+      const data = await getDashboard();
+      setDashboard(data);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <AdminLayout>
+        <div className="text-gray-500 text-lg">Loading dashboard...</div>
+      </AdminLayout>
+    );
+  }
+  const bookingTrend = [
+    { day: "Mon", bookings: 4 },
+    { day: "Tue", bookings: 8 },
+    { day: "Wed", bookings: 6 },
+    { day: "Thu", bookings: 10 },
+    { day: "Fri", bookings: 7 },
+    { day: "Sat", bookings: 9 },
+    { day: "Sun", bookings: 5 },
+  ];
+
+  const COLORS = ["#2563EB", "#7C3AED", "#EAB308", "#22C55E"];
 
   return (
     <AdminLayout>
-      {/* HEADER */}
+      {/* Heading */}
 
-      <div className="flex items-start justify-between">
-        <div>
-          <h1 className="text-5xl font-bold">Welcome Back!</h1>
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
 
-          <p className="text-gray-500 text-lg mt-3">
-            Manage bookings, reports, technicians and laboratory operations.
-          </p>
-        </div>
-
-        <div className="flex items-center gap-6">
-          <button className="relative">
-            <Bell size={26} className="text-gray-600" />
-
-            <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-red-500 text-white text-xs flex items-center justify-center">
-              3
-            </span>
-          </button>
-
-          <div className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-full bg-blue-500"></div>
-
-            <div>
-              <p className="font-semibold">Administrator</p>
-
-              <p className="text-sm text-gray-500">Admin</p>
-            </div>
-          </div>
-        </div>
+        <p className="text-gray-500 mt-1">
+          Welcome back. Here's an overview of your laboratory.
+        </p>
       </div>
 
-      {/* STATS */}
+      {/* Cards */}
 
-      <div className="grid grid-cols-4 gap-6 mt-10">
+      <div className="grid grid-cols-4 gap-5">
         <StatCard
-          title="Bookings"
-          value="124"
-          subtitle="All Time"
-          color="bg-green-100"
+          title="Today's Bookings"
+          value={dashboard.cards.todayBookings}
+          icon={<CalendarDays size={24} />}
         />
 
         <StatCard
-          title="Reports Pending"
-          value="18"
-          subtitle="Awaiting Upload"
-          color="bg-yellow-100"
+          title="Pending Reports"
+          value={dashboard.cards.pendingReports}
+          icon={<FileText size={24} />}
         />
 
         <StatCard
-          title="Technicians"
-          value="12"
-          subtitle="Active Staff"
-          color="bg-purple-100"
+          title="Completed Tests"
+          value={dashboard.cards.completedTests}
+          icon={<ClipboardCheck size={24} />}
         />
 
         <StatCard
           title="Patients"
-          value="328"
-          subtitle="Registered"
-          color="bg-orange-100"
+          value={dashboard.cards.totalPatients}
+          icon={<Users size={24} />}
         />
       </div>
 
-      {/* RECENT BOOKINGS */}
+      {/* Charts Row */}
 
-      <div className="bg-white rounded-3xl mt-10 shadow-sm overflow-hidden">
-        <div className="flex items-center justify-between px-8 py-7">
-          <div>
-            <h2 className="text-3xl font-bold">Recent Bookings</h2>
+      <div className="grid grid-cols-3 gap-6 mt-6">
+        {/* Booking Trend */}
 
-            <p className="text-gray-500 mt-1">Latest pathology appointments</p>
+        <div className="col-span-2 bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-lg font-semibold">Booking Trend</h2>
+
+              <p className="text-sm text-gray-500 mt-1">
+                Weekly appointment overview
+              </p>
+            </div>
           </div>
 
-          <Link to="/admin/bookings" className="text-blue-600 font-medium">
+          <div className="h-[320px] flex items-center justify-center text-gray-400">
+            <ResponsiveContainer width="100%" height={280}>
+              <LineChart data={bookingTrend}>
+                <XAxis dataKey="day" />
+
+                <Tooltip />
+
+                <Line
+                  type="monotone"
+                  dataKey="bookings"
+                  stroke="#2563EB"
+                  strokeWidth={3}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Status Chart */}
+
+        <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+          <h2 className="text-lg font-semibold">Booking Status</h2>
+
+          <p className="text-sm text-gray-500 mt-1">
+            Current booking distribution
+          </p>
+
+          {/* Donut chart goes here */}
+
+          <div className="h-[320px] flex items-center justify-center text-gray-400">
+            <ResponsiveContainer width="100%" height={280}>
+              <PieChart>
+                <Pie
+                  data={dashboard.statusChart}
+                  dataKey="value"
+                  nameKey="name"
+                  innerRadius={60}
+                  outerRadius={90}
+                  paddingAngle={2}
+                >
+                  {dashboard.statusChart.map((entry, index) => (
+                    <Cell key={index} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+
+            <div className="mt-5 space-y-2">
+              {dashboard.statusChart.map((item) => (
+                <div key={item.name} className="flex justify-between text-sm">
+                  <span>{item.name}</span>
+
+                  <span className="font-semibold">{item.value}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Recent Bookings */}
+      {/* ================= Recent Bookings ================= */}
+
+      <div className="bg-white rounded-xl border border-gray-100 mt-6 overflow-hidden">
+        {/* Header */}
+
+        <div className="flex items-center justify-between px-6 py-5">
+          <div>
+            <h2 className="text-lg font-semibold text-gray-900">
+              Recent Bookings
+            </h2>
+
+            <p className="text-sm text-gray-500 mt-1">
+              Latest pathology appointments.
+            </p>
+          </div>
+
+          <Link
+            to="/admin/bookings"
+            className="text-sm font-medium text-blue-600 hover:underline"
+          >
             View All
           </Link>
         </div>
 
-        {/* TABLE HEADER */}
+        {/* Divider */}
 
-        <div className="grid grid-cols-6 bg-gray-50 px-8 py-5 font-semibold text-gray-600">
-          <p>Patient</p>
+        <div className="border-t border-gray-100"></div>
 
-          <p>Tests</p>
+        {/* Table */}
 
-          <p>Status</p>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="border-y border-gray-100 bg-white text-left">
+                <th className="px-6 py-3 text-sm font-medium text-gray-500">
+                  Patient
+                </th>
 
-          <p>Date</p>
+                <th className="px-6 py-3 text-sm font-medium text-gray-500">
+                  Tests
+                </th>
 
-          <p>Time</p>
+                <th className="px-6 py-3 text-sm font-medium text-gray-500">
+                  Status
+                </th>
 
-          <p className="text-right">Action</p>
+                <th className="px-6 py-3 text-sm font-medium text-gray-500">
+                  Date
+                </th>
+
+                <th className="px-6 py-3 text-sm font-medium text-gray-500">
+                  Time
+                </th>
+
+                <th className="px-6 py-3 text-right text-sm font-medium text-gray-500">
+                  Action
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {dashboard.recentBookings.map((booking) => (
+                <tr
+                  key={booking._id}
+                  className="border-b border-gray-100 hover:bg-gray-50 transition"
+                >
+                  {/* Patient */}
+
+                  <td className="px-6 py-4">
+                    <div>
+                      <p className="font-semibold text-[15px] text-gray-900">
+                        {booking.userId?.name}
+                      </p>
+
+                      <p className="text-xs text-gray-400 mt-1">
+                        {booking.userId?.email}
+                      </p>
+                    </div>
+                  </td>
+
+                  {/* Tests */}
+
+                  <td className="px-6 py-4">
+                    <p
+                      className="max-w-[240px] truncate text-sm text-gray-700"
+                      title={booking.tests?.map((t) => t.testName).join(", ")}
+                    >
+                      {booking.tests?.map((t) => t.testName).join(", ")}
+                    </p>
+                  </td>
+
+                  {/* Status */}
+
+                  <td className="px-6 py-4">
+                    <StatusBadge status={booking.status} />
+                  </td>
+
+                  {/* Date */}
+
+                  <td className="px-6 py-4 text-sm text-gray-600">
+                    {new Date(booking.appointmentDate).toLocaleDateString(
+                      "en-GB",
+                    )}
+                  </td>
+
+                  {/* Time */}
+
+                  <td className="px-6 py-4 text-sm text-gray-600">
+                    {booking.timeSlot}
+                  </td>
+
+                  {/* Action */}
+
+                  <td className="px-6 py-4 text-right">
+                    <Link
+                      to={`/admin/bookings/${booking._id}`}
+                      className="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-700"
+                    >
+                      View
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          d="M9 5l7 7-7 7"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-
-        {/* TABLE ROWS */}
-
-        {bookings.slice(0, 5).map((booking) => (
-          <div
-            key={booking._id}
-            className="grid grid-cols-6 items-center px-8 py-5 border-b last:border-none"
-          >
-            <div>
-              <p className="font-semibold">{booking.userId?.name}</p>
-
-              <p className="text-sm text-gray-500">{booking.userId?.email}</p>
-            </div>
-
-            <p className="truncate pr-5">
-              {booking.tests?.map((test) => test.testName).join(", ")}
-            </p>
-
-            <StatusBadge status={booking.status} />
-
-            <p>{new Date(booking.appointmentDate).toLocaleDateString()}</p>
-
-            <p>{booking.timeSlot}</p>
-
-            <Link
-              to={`/admin/bookings/${booking._id}`}
-              className="flex justify-end"
-            >
-              <ChevronRight size={22} className="text-gray-500" />
-            </Link>
-          </div>
-        ))}
       </div>
     </AdminLayout>
-  );
-};
-
-const StatCard = ({ title, value, subtitle, color }) => {
-  return (
-    <div className="bg-white rounded-3xl p-6 shadow-sm hover:shadow-md transition">
-      <div className="flex items-start justify-between">
-        <div>
-          <p className="text-gray-500 text-sm">{title}</p>
-
-          <h2 className="text-4xl font-bold mt-4">{value}</h2>
-
-          <p className="text-gray-400 text-sm mt-3">{subtitle}</p>
-        </div>
-
-        {/* Replace this with your own icon */}
-
-        <div className={`w-14 h-14 rounded-2xl ${color}`} />
-      </div>
-    </div>
-  );
-};
-
-const StatusBadge = ({ status }) => {
-  const styles = {
-    Pending: "bg-yellow-100 text-yellow-700",
-
-    Assigned: "bg-blue-100 text-blue-700",
-
-    Collected: "bg-purple-100 text-purple-700",
-
-    Completed: "bg-green-100 text-green-700",
-  };
-
-  return (
-    <span
-      className={`inline-flex items-center justify-center px-3 py-2 rounded-full text-sm font-medium w-fit ${
-        styles[status] || "bg-gray-100 text-gray-700"
-      }`}
-    >
-      {status}
-    </span>
   );
 };
 

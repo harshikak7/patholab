@@ -5,7 +5,7 @@ import { getMyBookings } from "../services/bookingService";
 import { useNavigate } from "react-router-dom";
 
 const MyBookings = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -114,15 +114,11 @@ const MyBookings = () => {
                   </span>
 
                   <button
-  onClick={() =>
-    navigate(
-      `/booking-details/${booking._id}`
-    )
-  }
-  className="text-blue-600 font-medium hover:text-blue-700"
->
-  View Details
-</button>
+                    onClick={() => navigate(`/booking-details/${booking._id}`)}
+                    className="text-blue-600 font-medium hover:text-blue-700"
+                  >
+                    View Details
+                  </button>
                 </div>
               </div>
             ))}

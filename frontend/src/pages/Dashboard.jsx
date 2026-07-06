@@ -4,31 +4,37 @@ import { Calendar, FileText, Activity, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { getMyBookings } from "../services/bookingService";
 import { useEffect, useState } from "react";
+import { getMyReports, getReportByBooking } from "../services/reportService";
 
 const Dashboard = () => {
   const [bookings, setBookings] = useState([]);
+  const [reports, setReports] = useState([]);
   useEffect(() => {
-    const fetchBookings = async () => {
+    const fetchData = async () => {
       try {
-        const data = await getMyBookings();
-        setBookings(data);
+        const bookingData = await getMyBookings();
+        setBookings(bookingData);
+
+        const reportData = await getMyReports();
+        setReports(reportData);
       } catch (error) {
         console.log(error);
       }
     };
 
-    fetchBookings();
+    fetchData();
   }, []);
-
   const totalBookings = bookings.length;
   const completedTests = bookings.filter(
-    (booking) => booking.status === "completed",
+    (booking) => booking.status === "Completed",
   ).length;
-  const reportsReady = completedTests; // Assuming each completed test has a report ready
+
+  const reportsReady = reports.length;
 
   const upcomingBooking = bookings.find(
     (booking) => booking.status !== "Completed",
   );
+
   return (
     <div className="min-h-screen bg-[#F7F8FC]">
       <Navbar />
@@ -89,6 +95,14 @@ const Dashboard = () => {
                       <p className="text-gray-500 mt-2">
                         Home Sample Collection
                       </p>
+
+                      <p className="mt-4 text-sm text-gray-500">Technician</p>
+
+                      <p className="font-medium">
+                        {upcomingBooking.technicianId
+                          ? upcomingBooking.technicianId.name
+                          : "Waiting to be assigned"}
+                      </p>
                     </div>
 
                     <span className="px-4 py-2 rounded-full bg-yellow-100 text-yellow-700 text-sm font-medium">
@@ -138,10 +152,10 @@ const Dashboard = () => {
 
           <div className="bg-white rounded-2xl p-7 shadow-sm">
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold">Recent Bookings</h2>
+              <h2 className="text-xl font-semibold">Latest Reports</h2>
 
               <Link
-                to="/my-bookings"
+                to="/reports"
                 className="text-blue-600 flex items-center gap-1"
               >
                 View All
@@ -149,29 +163,36 @@ const Dashboard = () => {
               </Link>
             </div>
 
-            <div className="space-y-4 mt-6">
-              {bookings.length > 0 ? (
-                bookings.slice(0, 3).map((booking) => (
+            <div className="space-y-5 mt-6">
+              {reports.length > 0 ? (
+                reports.slice(0, 3).map((report) => (
                   <div
-                    key={booking._id}
-                    className="border-b border-gray-100 pb-4"
+                    key={report._id}
+                    className="border-b border-gray-100 pb-4 flex justify-between items-center"
                   >
-                    <p className="font-medium">
-                      {booking.tests?.map((test) => test.testName).join(", ")}
-                    </p>
-                    <div className="flex justify-between items-center mt-2">
-                      <p className="text-sm text-gray-500">
-                        {new Date(booking.appointmentDate).toLocaleDateString()}
+                    <div>
+                      <p className="font-medium">
+                        {report.bookingId.tests
+                          ?.map((t) => t.testName)
+                          .join(", ")}
                       </p>
 
-                      <span className="px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 text-xs">
-                        {booking.status}
-                      </span>
+                      <p className="text-sm text-gray-500 mt-1">
+                        Uploaded{" "}
+                        {new Date(report.createdAt).toLocaleDateString()}
+                      </p>
                     </div>
+
+                    <button
+                      onClick={() => window.open(report.reportUrl, "_blank")}
+                      className="text-blue-600 text-sm font-medium"
+                    >
+                      View PDF
+                    </button>
                   </div>
                 ))
               ) : (
-                <p className="text-gray-500">No bookings yet.</p>
+                <p className="text-gray-500">No reports available yet.</p>
               )}
             </div>
           </div>

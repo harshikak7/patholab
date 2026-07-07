@@ -1,13 +1,9 @@
 import axios from "axios";
 
-const API =
-  "http://localhost:5000/tests";
+const API = import.meta.env.VITE_API_URL;
 
-export const getTests =
-  async () => {
+export const getTests = async () => {
+  const response = await axios.get(`${API}/tests`);
 
-    const response =
-      await axios.get(API);
-
-    return response.data;
-  };
+  return response.data;
+};

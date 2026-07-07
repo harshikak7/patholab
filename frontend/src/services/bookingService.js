@@ -1,19 +1,12 @@
-import axios from 'axios';
+import axios from "axios";
 
-const API= "http://localhost:5000/bookings";
+const API = import.meta.env.VITE_API_URL;
 
-export const createBooking=async(bookingDate)=>{
-    const token=localStorage.getItem('token')
-
-    const response=await axios.post(API,bookingDate,{
-       withCredentials:true,
-    })
-    return response.data
-}
-
-export const getMyBookings = async () => {
-  const response = await axios.get(
-    "http://localhost:5000/bookings/my-bookings",
+export const createBooking = async (bookingDate) => {
+   const token=localStorage.getItem('token')
+  const response = await axios.post(
+    `${API}/bookings`,
+    bookingDate,
     {
       withCredentials: true,
     }
@@ -22,17 +15,24 @@ export const getMyBookings = async () => {
   return response.data;
 };
 
-export const getBookingById =
-  async (id) => {
+export const getMyBookings = async () => {
+  const response = await axios.get(
+    `${API}/bookings/my-bookings`,
+    {
+      withCredentials: true,
+    }
+  );
 
-    const response =
-      await axios.get(
-        `http://localhost:5000/bookings/${id}`,
-        {
-          withCredentials:
-            true,
-        }
-      );
+  return response.data;
+};
 
-    return response.data;
-  };
+export const getBookingById = async (id) => {
+  const response = await axios.get(
+    `${API}/bookings/${id}`,
+    {
+      withCredentials: true,
+    }
+  );
+
+  return response.data;
+};

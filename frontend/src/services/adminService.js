@@ -1,7 +1,8 @@
 import axios from "axios";
+const API = import.meta.env.VITE_API_URL;
 
 export const getAllBookings = async () => {
-  const response = await axios.get("http://localhost:5000/admin/bookings", {
+  const response = await axios.get(`${API}/admin/bookings`, {
     withCredentials: true,
   });
 
@@ -9,7 +10,7 @@ export const getAllBookings = async () => {
 };
 
 export const getDashboard = async () => {
-  const response = await axios.get("http://localhost:5000/admin/dashboard", {
+  const response = await axios.get(`${API}/admin/dashboard`, {
     withCredentials: true,
   });
 
@@ -24,7 +25,7 @@ export const uploadReport = async (bookingId, file) => {
   formData.append("report", file);
 
   const response = await axios.post(
-    "http://localhost:5000/reports/upload",
+    `${API}/reports/upload`,
 
     formData,
 
@@ -37,7 +38,7 @@ export const uploadReport = async (bookingId, file) => {
 };
 
 export const getReports = async () => {
-  const res = await axios.get("http://localhost:5000/reports/admin", {
+  const res = await axios.get(`${API}/reports/admin`, {
     withCredentials: true,
   });
 
@@ -45,7 +46,7 @@ export const getReports = async () => {
 };
 
 export const getReportByBooking = async (bookingId) => {
-  const res = await axios.get(`http://localhost:5000/reports/${bookingId}`, {
+  const res = await axios.get(`${API}/reports/${bookingId}`, {
     withCredentials: true,
   });
 
@@ -60,7 +61,7 @@ export const replaceReport = async (bookingId, file) => {
   formData.append("report", file);
 
   const res = await axios.post(
-    "http://localhost:5000/reports/upload",
+    `${API}/reports/upload`,
     formData,
     {
       withCredentials: true,
@@ -71,7 +72,7 @@ export const replaceReport = async (bookingId, file) => {
 };
 
 export const getTechnicians = async () => {
-  const response = await axios.get("http://localhost:5000/admin/technicians", {
+  const response = await axios.get(`${API}/admin/technicians`, {
     withCredentials: true,
   });
 
@@ -80,7 +81,7 @@ export const getTechnicians = async () => {
 
 export const assignTechnician = async (bookingId, technicianId) => {
   const response = await axios.put(
-    `http://localhost:5000/admin/bookings/${bookingId}/assign`,
+    `${API}/admin/bookings/${bookingId}/assign`,
     {
       technicianId,
     },

@@ -1,8 +1,8 @@
 import axios from "axios";
-
+const API = import.meta.env.VITE_API_URL;
 export const getMyReports = async () => {
   const response = await axios.get(
-    "http://localhost:5000/reports/my-reports",
+    `${API}/reports/my-reports`,
     {
       withCredentials: true,
     }
@@ -13,7 +13,7 @@ export const getMyReports = async () => {
 
 export const getReportByBooking = async (bookingId) => {
   const response = await axios.get(
-    `http://localhost:5000/reports/${bookingId}`,
+    `${API}/reports/${bookingId}`,
     {
       withCredentials: true,
     }

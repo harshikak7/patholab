@@ -70,11 +70,11 @@ router.post("/login", async (req, res) => {
     );
 
     res.cookie("token", token, {
-      httpOnly: true,
-      secure: false,
-      sameSite: "lax",
-      maxAge: 24 * 60 * 60 * 1000, //24 hours x 60 mins x 60 seconds x 1000ms (how long cookie stays in browser since 1day so this no)
-    });
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+  maxAge: 24 * 60 * 60 * 1000,
+});
 
     res.json({ message: "Login succesfull" });
   } catch (error) {
@@ -183,15 +183,12 @@ router.post("/google-login", async (req, res) => {
       },
     );
 
-    res.cookie(
-      "token",
-
-      token,
-
-      {
-        httpOnly: true,
-      },
-    );
+   res.cookie("token", token, {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+  maxAge: 7 * 24 * 60 * 60 * 1000,
+});
 
     res.status(200).json({
       message: "Login Success",

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import logo from "../assets/logo.svg";
 import { Mail } from "lucide-react";
-import { forgotPassword } from "../services/AuthService";
+import { forgotPassword } from "../services/authService";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");

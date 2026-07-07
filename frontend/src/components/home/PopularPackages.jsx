@@ -7,8 +7,8 @@ import fitness from "../../assets/fitness.png";
 
 const packages = [
   {
-    title: "Full Body Checkup",
-    price: "1400",
+    title: "CBC",
+    price: "350",
     recommended: true,
     icon: body,
 
@@ -21,12 +21,12 @@ const packages = [
 
   {
     title: "Women Health Kit",
-    price: "500",
+    price: "3000",
     recommended: true,
     icon: women,
 
     features: [
-      "50+ Tests included",
+      "10+ Tests included",
       "Reports within 24 hours",
       "Free Home Sample Collection",
     ],
@@ -34,12 +34,12 @@ const packages = [
 
   {
     title: "Fitness Checkup",
-    price: "800",
+    price: "1000",
     recommended: true,
     icon: fitness,
 
     features: [
-      "50+ Tests included",
+      "10+ Tests included",
       "Reports within 24 hours",
       "Free Home Sample Collection",
     ],

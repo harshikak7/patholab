@@ -60,6 +60,10 @@ app.use('/reports',reportRoutes);
 const paymentRoutes=require('./routes/payment')
 app.use('/payment',paymentRoutes)
 
+//admin route
+const adminRoutes=require('./routes/admin')
+app.use('/admin',adminRoutes)
+
 //Temp Protect route
 const verifyToken=require('./middleware/auth')
 

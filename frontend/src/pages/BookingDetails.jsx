@@ -8,6 +8,7 @@ import { Calendar, Clock3, MapPin, FileText, CheckCircle2 } from "lucide-react";
 
 import { getBookingById } from "../services/bookingService";
 
+import { getReportByBooking } from "../services/reportService";
 const BookingDetails = () => {
   const { id } = useParams();
 
@@ -176,22 +177,44 @@ const BookingDetails = () => {
 
             {/* TECHNICIAN */}
 
-            <div className="bg-white rounded-2xl p-6 shadow-sm">
-              <h3 className="font-bold text-xl">Technician</h3>
+           <div className="bg-white rounded-2xl p-6 shadow-sm">
+  <h3 className="font-bold text-xl">Technician</h3>
 
-              <div className="mt-5">
-                <div className="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold">
-                  T
-                </div>
+  {booking.technicianId ? (
+    <div className="mt-5">
+      <div className="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold">
+        {booking.technicianId.name.charAt(0)}
+      </div>
 
-                <p className="font-semibold mt-4">Not Assigned Yet</p>
+      <p className="font-semibold mt-4">
+        {booking.technicianId.name}
+      </p>
 
-                <p className="text-gray-500 mt-2 text-sm">
-                  A certified sample collection executive will be assigned
-                  before your appointment.
-                </p>
-              </div>
-            </div>
+      <p className="text-gray-500 mt-2">
+        {booking.technicianId.phone}
+      </p>
+
+      <p className="text-gray-500 text-sm">
+        {booking.technicianId.email}
+      </p>
+    </div>
+  ) : (
+    <div className="mt-5">
+      <div className="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold">
+        T
+      </div>
+
+      <p className="font-semibold mt-4">
+        Not Assigned Yet
+      </p>
+
+      <p className="text-gray-500 mt-2 text-sm">
+        A certified sample collection executive will be assigned
+        before your appointment.
+      </p>
+    </div>
+  )}
+</div>
 
             {/* PAYMENT */}
 
@@ -212,12 +235,31 @@ const BookingDetails = () => {
             {/* REPORTS */}
 
             <div className="bg-white rounded-2xl p-6 shadow-sm">
-              <h3 className="font-bold text-xl">Reports</h3>
+  <h3 className="font-bold text-xl">Reports</h3>
 
-              <p className="mt-4 text-gray-500">
-                Report will be available once sample processing is completed.
-              </p>
-            </div>
+  {booking.reportUpload ? (
+    <div className="mt-5">
+      <p className="text-green-600 font-medium">
+        Your report is ready.
+      </p>
+
+      <button
+        onClick={async () => {
+          const report = await getReportByBooking(booking._id);
+
+          window.open(report.reportUrl, "_blank");
+        }}
+        className="mt-5 px-5 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700"
+      >
+        View Report
+      </button>
+    </div>
+  ) : (
+    <p className="mt-4 text-gray-500">
+      Report will be available once sample processing is completed.
+    </p>
+  )}
+</div>
           </div>
         </div>
       </div>

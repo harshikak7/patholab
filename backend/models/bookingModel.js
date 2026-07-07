@@ -7,6 +7,11 @@ const bookingSchema = new mongoose.Schema(
       ref: "User",
       required: [true, "User ID is required"],
     },
+    technicianId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Technician",
+      default: null,
+    },
     tests: {
       type: [mongoose.Schema.Types.ObjectId],
       ref: "Test",

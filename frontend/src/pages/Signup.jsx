@@ -1,10 +1,12 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { User, Mail, Phone, Lock, MapPin, Eye, EyeOff } from "lucide-react";
 import logo from "../assets/logo.svg";
 import { useState } from "react";
 import { signupUser } from "../services/authService";
+import Swal from "sweetalert2";
 
 const Signup = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -37,27 +39,45 @@ const Signup = () => {
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
     if (!passwordRegex.test(formData.password)) {
-      alert(
-        "Password must contain uppercase, lowercase, number, special character and be at least 8 characters long",
-      );
+      Swal.fire({
+        icon: "warning",
+        title: "Weak Password",
+        text: "Password must contain uppercase, lowercase, number, special character and be at least 8 characters long.",
+      });
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
-      alert("Please enter a valid email address");
+      Swal.fire({
+        icon: "warning",
+        title: "Invalid Email",
+        text: "Please enter a valid email address.",
+      });
       return;
     }
 
     if (formData.password != formData.confirmPassword) {
-      alert("Password do not match");
+      Swal.fire({
+        icon: "warning",
+        title: "Password Mismatch",
+        text: "Passwords do not match.",
+      });
       return;
     }
 
     try {
-      const response = await signupUser(formData);
-      alert(response.data.message);
-      console.log(response.data);
+      await signupUser(formData);
+
+      await Swal.fire({
+        icon: "success",
+        title: "Account Created",
+        text: "Your account has been created successfully.",
+        timer: 1800,
+        showConfirmButton: false,
+      });
+
+      navigate("/login");
     } catch (error) {
       alert(
         error.response?.data?.message ||

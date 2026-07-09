@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { resetPassword } from "../services/authService.js";
 import { Eye, EyeOff } from "lucide-react";
+import Swal from "sweetalert2";
 
 const ResetPassword = () => {
   const { token } = useParams();
@@ -15,8 +16,12 @@ const ResetPassword = () => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
-      alert("Passwords do not match");
-
+      Swal.fire({
+        icon: "error",
+        title: "Google Login Failed",
+        text:
+          error.response?.data?.message || error.message || "Please try again.",
+      });
       return;
     }
 
@@ -26,11 +31,21 @@ const ResetPassword = () => {
         password,
       });
 
-      alert(response.data.message);
+      await Swal.fire({
+        icon: "success",
+        title: "Password Updated",
+        text: "You can now login using your new password.",
+        timer: 1800,
+        showConfirmButton: false,
+      });
 
       navigate("/login");
     } catch (error) {
-      alert(error.response?.data?.message || "Failed");
+      Swal.fire({
+        icon: "error",
+        title: "Reset Failed",
+        text: error.response?.data?.message || "Something went wrong.",
+      });
     }
   };
 

@@ -10,7 +10,7 @@ import { auth, provider } from "../config/firebase";
 import { googleLogin } from "../services/authService";
 import { checkAuth } from "../services/authService";
 import { useAuth } from "../context/AuthContext";
-
+import Swal from "sweetalert2";
 const Login = () => {
   const { setUser } = useAuth();
   const navigate = useNavigate();
@@ -33,21 +33,28 @@ const Login = () => {
 
       setUser(authData.data.user);
 
-      alert(response.data.message);
-
+      await Swal.fire({
+        icon: "success",
+        title: "Welcome!",
+        text: "Google login successful.",
+        timer: 1500,
+        showConfirmButton: false,
+      });
       if (authData.data.user.role === "admin") {
-  navigate("/admin/dashboard");
-} else {
-  navigate("/dashboard");
-}
+        navigate("/admin/dashboard");
+      } else {
+        navigate("/dashboard");
+      }
     } catch (error) {
       console.log(error);
-
       console.log(error.response?.data);
 
-      alert(
-        error.response?.data?.message || error.message || "Google Login Failed",
-      );
+      Swal.fire({
+        icon: "error",
+        title: "Google Login Failed",
+        text:
+          error.response?.data?.message || error.message || "Please try again.",
+      });
     }
   };
 
@@ -67,13 +74,21 @@ const Login = () => {
     e.preventDefault();
 
     if (!formData.email || !formData.password) {
-      alert("Please fill all fields");
+      Swal.fire({
+        icon: "warning",
+        title: "Missing Information",
+        text: "Please enter your email and password.",
+      });
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
-      alert("Please enter a valid email");
+      Swal.fire({
+        icon: "warning",
+        title: "Invalid Email",
+        text: "Please enter a valid email address.",
+      });
       return;
     }
 
@@ -84,15 +99,24 @@ const Login = () => {
 
       setUser(authData.data.user);
 
-      alert(response.data.message);
-
+      await Swal.fire({
+        icon: "success",
+        title: "Welcome Back!",
+        text: "Login successful.",
+        timer: 1500,
+        showConfirmButton: false,
+      });
       if (authData.data.user.role === "admin") {
-  navigate("/admin/dashboard");
-} else {
-  navigate("/dashboard");
-}
+        navigate("/admin/dashboard");
+      } else {
+        navigate("/dashboard");
+      }
     } catch (error) {
-      alert(error.response?.data?.message || "Login Failed");
+      Swal.fire({
+        icon: "error",
+        title: "Login Failed",
+        text: error.response?.data?.message || "Invalid email or password.",
+      });
     }
   };
 

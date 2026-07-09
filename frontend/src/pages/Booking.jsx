@@ -147,8 +147,11 @@ const Booking = () => {
     } catch (error) {
       console.log(error);
 
-      alert("Payment Failed");
-    } finally {
+Swal.fire({
+  icon: "error",
+  title: "Payment Failed",
+  text: "Your payment could not be completed. Please try again.",
+});    } finally {
       setLoading(false);
     }
   };

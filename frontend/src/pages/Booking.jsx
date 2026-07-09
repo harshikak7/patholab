@@ -12,7 +12,7 @@ import {
   IndianRupee,
 } from "lucide-react";
 import Navbar from "../components/home/Navbar";
-
+const API = import.meta.env.VITE_API_URL;
 const Booking = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -49,7 +49,7 @@ const Booking = () => {
   useEffect(() => {
     if (isCartBooking) return;
 
-    fetch(`http://localhost:5000/tests/${id}`)
+    fetch(`${API}/tests/${id}`)
       .then((res) => res.json())
       .then((data) => setTest(data));
   }, [id, isCartBooking]);

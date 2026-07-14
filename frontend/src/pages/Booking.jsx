@@ -20,7 +20,7 @@ const Booking = () => {
   const { id } = useParams();
   const location = useLocation();
   const { clearCart } = useCart();
-  const { user, loading } = useAuth();
+  const { user, loading:authLoading } = useAuth();
   const cartTests = JSON.parse(sessionStorage.getItem("cartBooking")) || [];
   console.log(cartTests);
   const isCartBooking = location.pathname === "/booking/cart";
@@ -49,10 +49,11 @@ const Booking = () => {
     : test?.price || 0;
 
     useEffect(() => {
-  if (!loading && !user) {
+  if (!authLoading  && !user) {
     navigate("/login");
   }
-}, [user, loading, navigate]);
+}, [user, authLoading , navigate]);
+
   useEffect(() => {
     if (isCartBooking) return;
 
@@ -61,6 +62,9 @@ const Booking = () => {
       .then((data) => setTest(data));
   }, [id, isCartBooking]);
 
+  if (authLoading) {
+  return <div className="p-20">Loading...</div>;
+}
   if (!isCartBooking && !test) {
     return <div className="p-20">Loading...</div>;
   }

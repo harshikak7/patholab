@@ -84,8 +84,15 @@ router.post("/login", async (req, res) => {
 
 //Logout Route
 router.post("/logout", (req, res) => {
-  res.clearCookie("token");
-  res.status(200).json({ message: "Logged out succesfully" });
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+  });
+
+  res.status(200).json({
+    message: "Logged out successfully",
+  });
 });
 
 //Check Auth Route

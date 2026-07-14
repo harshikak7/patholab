@@ -1,7 +1,9 @@
 import React from "react";
 import { Check } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const PackageCard = ({ item }) => {
+   const navigate = useNavigate();
   return (
     <div
       className="
@@ -17,7 +19,7 @@ const PackageCard = ({ item }) => {
       <div className="flex justify-between items-start">
         <img
           src={item.icon}
-          alt={item.title}
+          alt={item.testName}
           className="w-18 h-18 object-contain"
         />
 
@@ -40,7 +42,7 @@ const PackageCard = ({ item }) => {
       {/* Title + Price */}
       <div className="mt-5 flex justify-between items-center gap-4">
         <h3 className="text-[28px] font-semibold leading-tight">
-          {item.title}
+          {item.testName}
         </h3>
 
         <span className="text-[#17B978] text-[22px] font-semibold">
@@ -49,15 +51,26 @@ const PackageCard = ({ item }) => {
       </div>
 
       {/* Features */}
-      <div className="mt-6 space-y-3">
-        {item.features.map((feature) => (
-          <div key={feature} className="flex items-center gap-2 text-[#555]">
-            <Check size={18} className="text-[#17B978]" />
+    <div className="mt-6 space-y-3">
+  <div className="flex items-center gap-2 text-[#555]">
+    <Check size={18} className="text-[#17B978]" />
+    <span>{item.category}</span>
+  </div>
 
-            <span>{feature}</span>
-          </div>
-        ))}
-      </div>
+  <div className="flex items-center gap-2 text-[#555]">
+    <Check size={18} className="text-[#17B978]" />
+    <span>
+      {item.preparationRequired
+        ? "Preparation Required"
+        : "No Preparation Required"}
+    </span>
+  </div>
+
+  <div className="flex items-center gap-2 text-[#555]">
+    <Check size={18} className="text-[#17B978]" />
+    <span>Reports in {item.reportTime}</span>
+  </div>
+</div>
 
       {/* Buttons */}
       <div className="flex gap-3 mt-8">
@@ -76,15 +89,8 @@ const PackageCard = ({ item }) => {
         </button>
 
         <button
-          onClick={() => navigate(`/booking/${item.id}`)}
-          className="
-          flex-1
-          bg-blue-600
-          text-white
-          rounded-full
-          py-3
-          hover:bg-blue-700
-          "
+          onClick={() => navigate(`/booking/${item._id}`)}
+          className="bg-[#2F80FF] hover:bg-[#166CFF] text-white text-[17px] font-medium px-12 py-4 rounded-full transition"
         >
           Book Now
         </button>

@@ -13,7 +13,7 @@ const Home = () => {
       <Navbar/>
       <Hero/>
       <PopularPackages/>
-      <Form/>
+      {/* <Form/> */}
       <WhyPatholab/>
       <Testimonials/>
       <Footer/>

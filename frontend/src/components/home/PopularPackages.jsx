@@ -1,90 +1,49 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PackageCard from "./PackageCard";
+import { getTests } from "../../services/testService";
 
 import body from "../../assets/body.png";
 import women from "../../assets/women.png";
 import fitness from "../../assets/fitness.png";
 
-const packages = [
-  {
-    title: "CBC",
-    price: "350",
-    recommended: true,
-    icon: body,
-
-    features: [
-      "70 Tests included",
-      "Reports within 24 hours",
-      "Free Home Sample Collection",
-    ],
-  },
-
-  {
-    title: "Women Health Kit",
-    price: "3000",
-    recommended: true,
-    icon: women,
-
-    features: [
-      "10+ Tests included",
-      "Reports within 24 hours",
-      "Free Home Sample Collection",
-    ],
-  },
-
-  {
-    title: "Fitness Checkup",
-    price: "1000",
-    recommended: true,
-    icon: fitness,
-
-    features: [
-      "10+ Tests included",
-      "Reports within 24 hours",
-      "Free Home Sample Collection",
-    ],
-  },
-];
-
 const PopularPackages = () => {
+  const [tests, setTests] = useState([]);
+
+  useEffect(() => {
+    const fetchTests = async () => {
+      try {
+        const data = await getTests();
+
+        // Add icons to first 3 tests
+        const icons = [body, women, fitness];
+
+        const updatedTests = data.slice(0, 3).map((test, index) => ({
+          ...test,
+          icon: icons[index] || body,
+        }));
+
+        setTests(updatedTests);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchTests();
+  }, []);
+
   return (
     <section className="bg-white py-2">
-
       <div className="max-w-350 mx-auto px-6">
-
-        {/* Heading */}
-        <h2
-          className="
-          text-center
-          text-[32px]
-          md:text-[42px]
-          font-bold
-          "
-        >
+        <h2 className="text-center text-[32px] md:text-[42px] font-bold">
           Popular Test Packages
         </h2>
 
-        {/* Cards */}
-        <div
-          className="
-          mt-10
-          grid
-          grid-cols-1
-          md:grid-cols-2
-          lg:grid-cols-3
-          gap-8
-          "
-        >
-          {packages.map((item) => (
-            <PackageCard
-              key={item.title}
-              item={item}
-            />
+        <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {tests.map((item) => (
+            <PackageCard key={item._id} item={item} />
           ))}
         </div>
-
       </div>
-
     </section>
   );
 };

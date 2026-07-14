@@ -12,13 +12,15 @@ import {
   IndianRupee,
 } from "lucide-react";
 import Navbar from "../components/home/Navbar";
+import { useAuth } from "../context/AuthContext";
+
 const API = import.meta.env.VITE_API_URL;
 const Booking = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const location = useLocation();
   const { clearCart } = useCart();
-
+  const { user, loading } = useAuth();
   const cartTests = JSON.parse(sessionStorage.getItem("cartBooking")) || [];
   console.log(cartTests);
   const isCartBooking = location.pathname === "/booking/cart";
@@ -46,6 +48,11 @@ const Booking = () => {
     ? cartTests.reduce((sum, item) => sum + item.price, 0)
     : test?.price || 0;
 
+    useEffect(() => {
+  if (!loading && !user) {
+    navigate("/login");
+  }
+}, [user, loading, navigate]);
   useEffect(() => {
     if (isCartBooking) return;
 

@@ -35,7 +35,7 @@ const PopularPackages = () => {
     <section className="bg-white py-2">
       <div className="max-w-350 mx-auto px-6">
         <h2 className="text-center text-[32px] md:text-[42px] font-bold">
-          Popular Test Packages
+          Popular Tests
         </h2>
 
         <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

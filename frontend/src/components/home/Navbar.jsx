@@ -81,7 +81,7 @@ const Navbar = () => {
           {/* Button Login */}
           {!loading &&
             (user ? (
-              <div className="flex items-center gap-6">
+          <div className="hidden lg:flex items-center gap-6">
                 <button onClick={() => setCartOpen(true)} className="relative">
                   <ShoppingCart size={22} />
 
